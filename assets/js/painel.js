@@ -40,6 +40,9 @@ document.addEventListener("DOMContentLoaded", () => {
   // 9. Renderizar Avaliações dos Pacientes (Coluna Direita)
   renderDoctorReviews(currentDoctor);
 
+  // 10. Inicializar Gestão de Agenda & Calendário de Disponibilidade
+  initAvailabilityManager(currentDoctor);
+
   // Event Listeners das Abas de Período (Dia, Mês, Ano)
   document.querySelectorAll(".chart-tab-btn").forEach(btn => {
     btn.addEventListener("click", (e) => {
@@ -104,38 +107,71 @@ document.addEventListener("DOMContentLoaded", () => {
     // Filtrar agendamentos para o médico ativo
     const doctorCustomBookings = allBookings.filter(b => b.doctorId === docId);
 
-    // Agendamentos mock padrão realistas (3 consultas no dia)
+    // Agendamentos mock padrão realistas (6 consultas no dia distribuídas até a tarde)
     const defaultBookings = [
       {
         id: "apt-101",
+        patientName: "Maria Clara Vasconcelos",
+        phone: "(71) 99234-1188",
+        reason: "Primeira consulta de avaliação",
+        modality: "Consulta Presencial",
+        time: "08:30",
+        duration: "Tempo previsto: 35 min",
+        status: "Concluída",
+        date: "Hoje"
+      },
+      {
+        id: "apt-102",
+        patientName: "Lucas Silveira Mendes",
+        phone: "(71) 98841-5522",
+        reason: "Retorno clínico e prescrição",
+        modality: "Teleconsulta",
+        time: "09:30",
+        duration: "Tempo previsto: 30 min",
+        status: "Concluída",
+        date: "Hoje"
+      },
+      {
+        id: "apt-103",
+        patientName: "Fernanda Rocha Lima",
+        phone: "(71) 99178-9933",
+        reason: "Avaliação diagnóstica especializada",
+        modality: "Consulta Presencial",
+        time: "10:30",
+        duration: "Tempo previsto: 40 min",
+        status: "Concluída",
+        date: "Hoje"
+      },
+      {
+        id: "apt-104",
         patientName: "Juliana Mendes Castro",
         phone: "(71) 99842-1102",
         reason: "Check-up de rotina e acompanhamento",
         modality: "Consulta Presencial",
         time: "11:33",
-        duration: "Tempo previsto: 30 min",
+        duration: "Tempo previsto: 35 min",
         status: "Em andamento",
         date: "Hoje"
       },
       {
-        id: "apt-102",
-        patientName: "Rodrigo Barreto Santana",
-        phone: "(71) 98711-4455",
-        reason: "Primeira consulta de avaliação",
-        modality: "Consulta Presencial",
-        time: "14:00",
-        duration: "Tempo previsto: 45 min",
-        status: "Confirmada",
-        date: "Hoje"
-      },
-      {
-        id: "apt-103",
+        id: "apt-105",
         patientName: "Mariana Costa Silveira",
         phone: "(71) 99123-8877",
         reason: "Retorno e laudo de exames",
         modality: "Teleconsulta",
+        time: "14:30",
+        duration: "Tempo previsto: 30 min",
+        status: "Confirmada",
+        date: "Hoje"
+      },
+      {
+        id: "apt-106",
+        patientName: "Rodrigo Barreto Santana",
+        phone: "(71) 98711-4455",
+        reason: "Primeira consulta de diagnóstico",
+        modality: "Consulta Presencial",
         time: "16:30",
-        duration: "Tempo previsto: 20 min",
+        duration: "Tempo previsto: 45 min",
         status: "Confirmada",
         date: "Hoje"
       }
@@ -174,7 +210,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const elNewLabel = document.getElementById("kpi-label-new-patients");
 
     if (period === "dia") {
-      const todayCount = 3 + aptList.filter(a => a.isLive).length;
+      const liveApts = aptList.filter(a => a.isLive).length;
+      const todayCount = 6 + liveApts;
       const todayRev = (priceNum * todayCount).toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
 
       if (elPatients) elPatients.innerText = todayCount;
@@ -186,33 +223,33 @@ document.addEventListener("DOMContentLoaded", () => {
       if (elNew) elNew.innerText = "2";
       if (elNewLabel) elNewLabel.innerText = "Novos pacientes hoje";
     } else if (period === "ano") {
-      const liveBonus = aptList.filter(a => a.isLive).length * 4;
-      const yearConsults = 112 + liveBonus;
-      const yearPatients = 78 + aptList.filter(a => a.isLive).length;
+      const liveBonus = aptList.filter(a => a.isLive).length * 6;
+      const yearConsults = 476 + liveBonus;
+      const yearPatients = 184 + aptList.filter(a => a.isLive).length;
       const yearRev = (priceNum * yearConsults).toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
 
       if (elPatients) elPatients.innerText = yearPatients;
-      if (elPatientsLabel) elPatientsLabel.innerText = "Pacientes no ano";
+      if (elPatientsLabel) elPatientsLabel.innerText = "Pacientes na base (Ano)";
       if (elConsults) elConsults.innerText = yearConsults;
-      if (elConsultsLabel) elConsultsLabel.innerText = "Consultas no ano";
+      if (elConsultsLabel) elConsultsLabel.innerText = "Consultas realizadas (Ano)";
       if (elRev) elRev.innerText = yearRev;
-      if (elRevLabel) elRevLabel.innerText = "Faturamento anual";
-      if (elNew) elNew.innerText = "42";
+      if (elRevLabel) elRevLabel.innerText = "Faturamento acumulado";
+      if (elNew) elNew.innerText = "128";
       if (elNewLabel) elNewLabel.innerText = "Novos pacientes no ano";
     } else {
       // Mês (Padrão)
       const liveBonus = aptList.filter(a => a.isLive).length;
-      const monthConsults = 16 + liveBonus;
-      const monthPatients = (doc.reviewsCount || 25) + liveBonus;
+      const monthConsults = 48 + liveBonus;
+      const monthPatients = 52 + liveBonus;
       const monthRev = (priceNum * monthConsults).toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
 
       if (elPatients) elPatients.innerText = monthPatients;
-      if (elPatientsLabel) elPatientsLabel.innerText = "Total de pacientes";
+      if (elPatientsLabel) elPatientsLabel.innerText = "Total de pacientes no mês";
       if (elConsults) elConsults.innerText = monthConsults;
       if (elConsultsLabel) elConsultsLabel.innerText = "Consultas este mês";
       if (elRev) elRev.innerText = monthRev;
       if (elRevLabel) elRevLabel.innerText = "Faturamento mensal";
-      if (elNew) elNew.innerText = "8";
+      if (elNew) elNew.innerText = "14";
       if (elNewLabel) elNewLabel.innerText = "Novos pacientes este mês";
     }
 
@@ -238,15 +275,17 @@ document.addEventListener("DOMContentLoaded", () => {
       profileLink.title = `Visualizar página de perfil público de ${doc.name}`;
     }
 
+    const liveBonus = aptList.filter(a => a.isLive).length;
+    const totalPatientsBase = 184 + liveBonus;
     const patientsBadge = document.getElementById("widget-patients-badge");
-    if (patientsBadge) patientsBadge.innerText = `${(doc.reviewsCount || 25) + aptList.filter(a => a.isLive).length} Pacientes`;
+    if (patientsBadge) patientsBadge.innerText = `${totalPatientsBase} Pacientes`;
 
     const priceNum = getDoctorPrice(doc);
-    const yearConsults = 112 + (aptList.filter(a => a.isLive).length * 4);
+    const yearConsults = 476 + (liveBonus * 6);
     const annualRev = (priceNum * yearConsults).toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
 
     document.getElementById("widget-annual-rev").innerText = annualRev;
-    document.getElementById("widget-new-patients").innerText = "42";
+    document.getElementById("widget-new-patients").innerText = "128";
     document.getElementById("widget-total-cases").innerText = yearConsults;
   }
 
@@ -263,7 +302,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     container.innerHTML = aptList.map((apt, idx) => `
-      <div class="appointment-item-card" style="${apt.isLive ? 'border-left: 4px solid #10b981;' : ''}">
+      <div class="appointment-item-card" style="${apt.isLive ? 'border-left: 4px solid #10b981;' : (apt.status === 'Em andamento' ? 'border-left: 4px solid #028090;' : '')}">
         <div class="patient-info-col">
           <div class="patient-initial-thumb">${apt.patientName.charAt(0)}</div>
           <div class="patient-names-box">
@@ -281,19 +320,19 @@ document.addEventListener("DOMContentLoaded", () => {
         </div>
 
         <div>
-          <span class="status-badge-pill ${apt.status === 'Em andamento' ? 'status-in-progress' : 'status-confirmed'}">
+          <span class="status-badge-pill ${apt.status === 'Em andamento' ? 'status-in-progress' : (apt.status === 'Concluída' ? 'status-finished' : 'status-confirmed')}">
             ${apt.status}
           </span>
         </div>
 
         <div style="text-align: right;">
           <button type="button" class="btn-open-record" title="Abrir Prontuário Clínico Digital" onclick="window.DoctorSmartPanel.openRecordModal('${apt.patientName}', '${apt.reason}', '${apt.phone}')">
-            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1 2-2h2"></path>
-              <rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect>
-              <path d="M9 14h6"></path>
-              <path d="M9 18h6"></path>
-              <path d="M9 10h6"></path>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+              <polyline points="14 2 14 8 20 8"/>
+              <line x1="16" y1="13" x2="8" y2="13"/>
+              <line x1="16" y1="17" x2="8" y2="17"/>
+              <polyline points="10 9 9 9 8 9"/>
             </svg>
           </button>
         </div>
@@ -315,23 +354,29 @@ document.addEventListener("DOMContentLoaded", () => {
 
     let labels = [];
     let dataPoints = [];
-    let growthText = "+28% de novos atendimentos";
+    let growthText = "";
 
     if (period === "dia") {
       labels = ["08:00", "09:30", "11:00", "12:30", "14:00", "15:30", "17:00", "18:30"];
-      // Curva horária com distribuição clínica natural
-      dataPoints = [0, 1, 2, 0, 1, 3, 2, 1];
-      growthText = "3 atendimentos confirmados para hoje";
+      // Distribuição exata dos 6 pacientes nos horários do dia (Soma = 1+1+2+0+1+0+1+0 = 6)
+      dataPoints = [1, 1, 2, 0, 1, 0, 1, 0];
+      const todayTotal = 6;
+      const todayRev = (todayTotal * priceNum).toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
+      growthText = `${todayTotal} atendimentos hoje • Faturamento do dia: ${todayRev}`;
     } else if (period === "ano") {
       labels = ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"];
-      // Curva consistente demonstrando escala clínica
-      dataPoints = [5, 7, 9, 8, 12, 14, 11, 16, 19, 18, 23, 27];
-      growthText = "+145% de expansão anual na Doctor Smart";
+      // Distribuição exata dos 476 atendimentos ao longo dos 12 meses (Soma = 476)
+      dataPoints = [28, 32, 35, 37, 40, 42, 44, 45, 43, 42, 43, 45];
+      const yearTotal = 476;
+      const yearRev = (yearTotal * priceNum).toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
+      growthText = `${yearTotal} atendimentos acumulados • Faturamento anual: ${yearRev}`;
     } else {
-      // Mês (Padrão) - 10 intervalos para uma curva ondulante, viva e rica
+      // Mês (Padrão) - 10 intervalos de 3 dias no mês (Soma = 4+5+5+6+5+4+5+5+5+4 = 48)
       labels = ["01-03 Ago", "04-06 Ago", "07-09 Ago", "10-12 Ago", "13-15 Ago", "16-18 Ago", "19-21 Ago", "22-24 Ago", "25-27 Ago", "28-31 Ago"];
-      dataPoints = [2, 4, 3, 6, 7, 5, 8, 6, 9, 10];
-      growthText = "+32% de consultas em relação ao mês anterior";
+      dataPoints = [4, 5, 5, 6, 5, 4, 5, 5, 5, 4];
+      const monthTotal = 48;
+      const monthRev = (monthTotal * priceNum).toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
+      growthText = `${monthTotal} consultas este mês • Faturamento mensal: ${monthRev}`;
     }
 
     const growthEl = document.getElementById("chart-growth-txt");
@@ -482,8 +527,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const hbarsBox = document.getElementById("hbars-chart-box");
     if (hbarsBox) {
-      const totalP = (doc.reviewsCount || 25);
-      const totalC = Math.round(totalP * 1.5);
+      const totalP = 52;
+      const totalC = 48;
 
       hbarsBox.innerHTML = `
         <div class="horizontal-bars-group">
@@ -565,7 +610,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (returnEl) returnEl.innerText = "76.4%";
 
     const hoursEl = document.getElementById("fin-productive-hours");
-    if (hoursEl) hoursEl.innerText = "14h 30m";
+    if (hoursEl) hoursEl.innerText = "28h 00m";
   }
 
   // ==========================================================================
@@ -727,10 +772,361 @@ document.addEventListener("DOMContentLoaded", () => {
 
   document.getElementById("btn-close-record-modal")?.addEventListener("click", closeRecordModal);
 
+  // ==========================================================================
+  // GESTÃO DE AGENDA & CALENDÁRIO DE DISPONIBILIDADE DO MÉDICO
+  // ==========================================================================
+  function initAvailabilityManager(doc) {
+    const card = document.getElementById("secao-disponibilidade");
+    if (!card) return;
+
+    // Estado da Disponibilidade
+    const state = {
+      currentYear: 2026,
+      currentMonth: 7, // Agosto (0-indexed)
+      selectedDate: "2026-08-26",
+      modality: "presencial",
+      slots: {
+        presencial: {},
+        teleconsulta: {}
+      }
+    };
+
+    // Carregar do localStorage se existir, ou carregar padrão
+    const storageKey = `doctor_smart_custom_slots_${doc.id}`;
+    const saved = localStorage.getItem(storageKey);
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved);
+        if (parsed.presencial && parsed.teleconsulta) {
+          state.slots = parsed;
+        } else {
+          state.slots.presencial = parsed.presencial || parsed;
+          state.slots.teleconsulta = parsed.teleconsulta || {};
+        }
+      } catch (e) {
+        console.error("Erro ao carregar slots personalizados:", e);
+      }
+    } else {
+      // Padrão inicial
+      state.slots.presencial = doc.slotsPresencial || {
+        "2026-08-26": ["08:30", "09:30", "10:30", "11:33", "14:30", "16:30"],
+        "2026-08-27": ["08:30", "09:30", "11:00", "14:30", "16:00"],
+        "2026-08-28": ["09:00", "10:30", "14:00", "15:30", "17:00"],
+        "2026-08-31": ["08:30", "10:00", "11:30", "14:00", "16:00"]
+      };
+      state.slots.teleconsulta = doc.slotsTeleconsulta || {
+        "2026-08-26": ["11:30", "14:30", "17:30", "18:30", "19:00"],
+        "2026-08-27": ["10:00", "12:30", "18:00", "19:30"],
+        "2026-08-28": ["11:00", "16:30", "18:00"],
+        "2026-08-31": ["10:30", "15:00", "18:30", "19:30"]
+      };
+    }
+
+    // Listas mestras de horários por turno
+    const masterShifts = {
+      morning: ["08:00", "08:30", "09:00", "09:30", "10:00", "10:30", "11:00", "11:30", "12:00"],
+      afternoon: ["13:00", "13:30", "14:00", "14:30", "15:00", "15:30", "16:00", "16:30", "17:00", "17:30"],
+      evening: ["18:00", "18:30", "19:00", "19:30", "20:00"]
+    };
+
+    const monthNames = [
+      "Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho",
+      "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"
+    ];
+
+    const weekDayNames = [
+      "Domingo", "Segunda-feira", "Terça-feira", "Quarta-feira",
+      "Quinta-feira", "Sexta-feira", "Sábado"
+    ];
+
+    // Elementos DOM
+    const calMonthTitle = document.getElementById("avail-cal-month-title");
+    const calTableWrap = document.getElementById("avail-cal-days-table");
+    const btnCalPrev = document.getElementById("avail-cal-prev");
+    const btnCalNext = document.getElementById("avail-cal-next");
+
+    const selectedDateHeading = document.getElementById("avail-selected-date-heading");
+    const btnModPresencial = document.getElementById("btn-mod-presencial");
+    const btnModTele = document.getElementById("btn-mod-tele");
+
+    const chipsMorning = document.getElementById("chips-morning-grid");
+    const chipsAfternoon = document.getElementById("chips-afternoon-grid");
+    const chipsEvening = document.getElementById("chips-evening-grid");
+
+    const badgeMorning = document.getElementById("badge-morning-count");
+    const badgeAfternoon = document.getElementById("badge-afternoon-count");
+    const badgeEvening = document.getElementById("badge-evening-count");
+
+    const btnToggleAll = document.getElementById("btn-toggle-all-slots");
+    const btnToggleAllTxt = document.getElementById("btn-toggle-all-txt");
+    const btnReplicateWeek = document.getElementById("btn-replicate-week");
+    const btnSaveAvail = document.getElementById("btn-save-availability");
+    const syncInfoTxt = document.getElementById("avail-sync-info-txt");
+
+    // Funções auxiliares
+    function getCurrentMap() {
+      return state.slots[state.modality] || {};
+    }
+
+    function getDaySlots(dateKey) {
+      const map = getCurrentMap();
+      return map[dateKey] ? [...map[dateKey]] : [];
+    }
+
+    function setDaySlots(dateKey, newSlots) {
+      if (!state.slots[state.modality]) state.slots[state.modality] = {};
+      if (newSlots.length === 0) {
+        delete state.slots[state.modality][dateKey];
+      } else {
+        // Ordenar horários cronologicamente
+        state.slots[state.modality][dateKey] = newSlots.sort();
+      }
+    }
+
+    // Renderizar Calendário
+    function renderCalendar() {
+      if (!calTableWrap) return;
+      if (calMonthTitle) {
+        calMonthTitle.innerText = `${monthNames[state.currentMonth]} ${state.currentYear}`;
+      }
+
+      const headers = `
+        <div class="avail-cal-day-header">Seg</div>
+        <div class="avail-cal-day-header">Ter</div>
+        <div class="avail-cal-day-header">Qua</div>
+        <div class="avail-cal-day-header">Qui</div>
+        <div class="avail-cal-day-header">Sex</div>
+        <div class="avail-cal-day-header">Sáb</div>
+        <div class="avail-cal-day-header">Dom</div>
+      `;
+
+      const firstDay = new Date(state.currentYear, state.currentMonth, 1).getDay();
+      const startCol = (firstDay === 0 ? 6 : firstDay - 1);
+      const totalDays = new Date(state.currentYear, state.currentMonth + 1, 0).getDate();
+
+      let daysHtml = headers;
+
+      for (let i = 0; i < startCol; i++) {
+        daysHtml += `<div class="avail-cal-day-cell disabled"></div>`;
+      }
+
+      const currentMap = getCurrentMap();
+
+      for (let day = 1; day <= totalDays; day++) {
+        const monthStr = String(state.currentMonth + 1).padStart(2, '0');
+        const dayStr = String(day).padStart(2, '0');
+        const dateKey = `${state.currentYear}-${monthStr}-${dayStr}`;
+
+        const hasSlots = Boolean(currentMap[dateKey] && currentMap[dateKey].length > 0);
+        const isSelected = dateKey === state.selectedDate;
+
+        let classes = "avail-cal-day-cell";
+        if (hasSlots) classes += " has-slots";
+        if (isSelected) classes += " selected";
+
+        daysHtml += `
+          <div class="${classes}" data-date="${dateKey}">
+            ${day}
+          </div>
+        `;
+      }
+
+      calTableWrap.innerHTML = daysHtml;
+
+      // Eventos de clique nos dias
+      calTableWrap.querySelectorAll(".avail-cal-day-cell:not(.disabled)").forEach(cell => {
+        cell.addEventListener("click", () => {
+          const dateKey = cell.getAttribute("data-date");
+          if (!dateKey) return;
+          state.selectedDate = dateKey;
+          renderCalendar();
+          renderSlotsEditor();
+        });
+      });
+    }
+
+    // Renderizar Editor de Horários
+    function renderSlotsEditor() {
+      // Atualizar Título da Data
+      if (selectedDateHeading && state.selectedDate) {
+        const [year, month, day] = state.selectedDate.split("-").map(Number);
+        const dateObj = new Date(year, month - 1, day);
+        const weekDay = weekDayNames[dateObj.getDay()];
+        const monthName = monthNames[month - 1];
+        selectedDateHeading.innerText = `${weekDay}, ${day} de ${monthName} de ${year}`;
+      }
+
+      const activeSlots = getDaySlots(state.selectedDate);
+
+      // Renderizar Manhã
+      renderShiftGrid(chipsMorning, badgeMorning, masterShifts.morning, activeSlots);
+      // Renderizar Tarde
+      renderShiftGrid(chipsAfternoon, badgeAfternoon, masterShifts.afternoon, activeSlots);
+      // Renderizar Noite
+      renderShiftGrid(chipsEvening, badgeEvening, masterShifts.evening, activeSlots);
+
+      // Atualizar texto do botão Liberar/Bloquear
+      if (btnToggleAllTxt) {
+        btnToggleAllTxt.innerText = activeSlots.length > 0 ? "Bloquear Dia Inteiro" : "Liberar Grade Completa";
+      }
+    }
+
+    function renderShiftGrid(container, badgeEl, timeList, activeSlots) {
+      if (!container) return;
+
+      let shiftActiveCount = 0;
+
+      container.innerHTML = timeList.map(time => {
+        const isActive = activeSlots.includes(time);
+        if (isActive) shiftActiveCount++;
+
+        return `
+          <button type="button" class="time-slot-toggle-chip ${isActive ? 'active' : ''}" data-time="${time}">
+            ${isActive ? '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>' : ''}
+            ${time}
+          </button>
+        `;
+      }).join("");
+
+      if (badgeEl) {
+        badgeEl.innerText = `${shiftActiveCount} ${shiftActiveCount === 1 ? 'horário ativo' : 'horários ativos'}`;
+      }
+
+      // Adicionar listeners nos chips
+      container.querySelectorAll(".time-slot-toggle-chip").forEach(chip => {
+        chip.addEventListener("click", () => {
+          const time = chip.getAttribute("data-time");
+          toggleSlot(time);
+        });
+      });
+    }
+
+    function toggleSlot(time) {
+      let current = getDaySlots(state.selectedDate);
+      if (current.includes(time)) {
+        current = current.filter(t => t !== time);
+      } else {
+        current.push(time);
+      }
+      setDaySlots(state.selectedDate, current);
+      renderCalendar();
+      renderSlotsEditor();
+    }
+
+    // Ações Rápidas
+    btnToggleAll?.addEventListener("click", () => {
+      const current = getDaySlots(state.selectedDate);
+      if (current.length > 0) {
+        // Bloquear dia
+        setDaySlots(state.selectedDate, []);
+      } else {
+        // Liberar todos
+        const allTimes = [...masterShifts.morning, ...masterShifts.afternoon, ...masterShifts.evening];
+        setDaySlots(state.selectedDate, allTimes);
+      }
+      renderCalendar();
+      renderSlotsEditor();
+    });
+
+    btnReplicateWeek?.addEventListener("click", () => {
+      const currentSlots = getDaySlots(state.selectedDate);
+      if (currentSlots.length === 0) {
+        alert("Ative alguns horários neste dia antes de replicar.");
+        return;
+      }
+
+      const totalDays = new Date(state.currentYear, state.currentMonth + 1, 0).getDate();
+      let count = 0;
+
+      for (let day = 1; day <= totalDays; day++) {
+        const dateObj = new Date(state.currentYear, state.currentMonth, day);
+        const dayOfWeek = dateObj.getDay();
+        // Segunda (1) a Sexta (5)
+        if (dayOfWeek >= 1 && dayOfWeek <= 5) {
+          const monthStr = String(state.currentMonth + 1).padStart(2, '0');
+          const dayStr = String(day).padStart(2, '0');
+          const dateKey = `${state.currentYear}-${monthStr}-${dayStr}`;
+          setDaySlots(dateKey, [...currentSlots]);
+          count++;
+        }
+      }
+
+      renderCalendar();
+      renderSlotsEditor();
+      showSaveToast(`Grade replicada com sucesso para ${count} dias úteis deste mês!`);
+    });
+
+    // Alternar Modalidade
+    btnModPresencial?.addEventListener("click", () => {
+      btnModPresencial.classList.add("active");
+      btnModTele?.classList.remove("active");
+      state.modality = "presencial";
+      renderCalendar();
+      renderSlotsEditor();
+    });
+
+    btnModTele?.addEventListener("click", () => {
+      btnModTele.classList.add("active");
+      btnModPresencial?.classList.remove("active");
+      state.modality = "teleconsulta";
+      renderCalendar();
+      renderSlotsEditor();
+    });
+
+    // Navegação de Mês
+    btnCalPrev?.addEventListener("click", () => {
+      state.currentMonth--;
+      if (state.currentMonth < 0) {
+        state.currentMonth = 11;
+        state.currentYear--;
+      }
+      state.selectedDate = `${state.currentYear}-${String(state.currentMonth + 1).padStart(2, '0')}-01`;
+      renderCalendar();
+      renderSlotsEditor();
+    });
+
+    btnCalNext?.addEventListener("click", () => {
+      state.currentMonth++;
+      if (state.currentMonth > 11) {
+        state.currentMonth = 0;
+        state.currentYear++;
+      }
+      state.selectedDate = `${state.currentYear}-${String(state.currentMonth + 1).padStart(2, '0')}-01`;
+      renderCalendar();
+      renderSlotsEditor();
+    });
+
+    // Salvar no localStorage
+    btnSaveAvail?.addEventListener("click", () => {
+      localStorage.setItem(storageKey, JSON.stringify(state.slots));
+      showSaveToast("Disponibilidade salva! Os pacientes já podem ver os horários atualizados.");
+    });
+
+    function showSaveToast(msg) {
+      if (syncInfoTxt) {
+        syncInfoTxt.innerHTML = `
+          <span class="sync-status-icon" style="background: #10b981; color: #ffffff;">✓</span>
+          <strong style="color: #059669;">${msg}</strong>
+        `;
+        setTimeout(() => {
+          syncInfoTxt.innerHTML = `
+            <span class="sync-status-icon">✓</span>
+            <span>Alterações salvas e disponíveis na aba do paciente</span>
+          `;
+        }, 4000);
+      }
+    }
+
+    // Inicialização
+    renderCalendar();
+    renderSlotsEditor();
+  }
+
   window.DoctorSmartPanel = {
     openRecordModal,
     closeRecordModal,
     openHistoryModal,
-    closeHistoryModal
+    closeHistoryModal,
+    initAvailabilityManager
   };
 });

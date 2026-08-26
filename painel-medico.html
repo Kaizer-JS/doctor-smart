@@ -102,14 +102,14 @@
           </svg>
           Configurações do médico
         </a>
-        <a href="#disponibilidade" class="sidebar-nav-item" onclick="alert('Configuração de horários de atendimento Presencial e Teleconsulta.'); return false;">
+        <a href="#secao-disponibilidade" class="sidebar-nav-item" onclick="document.getElementById('secao-disponibilidade')?.scrollIntoView({behavior: 'smooth'}); return false;">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <circle cx="12" cy="12" r="10"/>
             <polyline points="12 6 12 12 14 14"/>
           </svg>
           Configurações de disponibilidade
         </a>
-        <a href="#gestao-agenda" class="sidebar-nav-item" onclick="alert('Gestão de bloqueios e slots da agenda.'); return false;">
+        <a href="#secao-disponibilidade" class="sidebar-nav-item" onclick="document.getElementById('secao-disponibilidade')?.scrollIntoView({behavior: 'smooth'}); return false;">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <rect width="18" height="18" x="3" y="4" rx="2" ry="2"/>
             <line x1="16" y1="2" x2="16" y2="6"/>
@@ -185,8 +185,8 @@
         <!-- Total de Pacientes -->
         <div class="metric-kpi-card">
           <div class="kpi-left-info">
-            <span class="kpi-number" id="kpi-total-patients">25</span>
-            <span class="kpi-label" id="kpi-label-patients">Total de pacientes</span>
+            <span class="kpi-number" id="kpi-total-patients">52</span>
+            <span class="kpi-label" id="kpi-label-patients">Total de pacientes no mês</span>
           </div>
           <div class="kpi-icon-box">
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -201,7 +201,7 @@
         <!-- Consultas -->
         <div class="metric-kpi-card">
           <div class="kpi-left-info">
-            <span class="kpi-number" id="kpi-total-consults">16</span>
+            <span class="kpi-number" id="kpi-total-consults">48</span>
             <span class="kpi-label" id="kpi-label-consults">Consultas este mês</span>
           </div>
           <div class="kpi-icon-box">
@@ -217,7 +217,7 @@
         <!-- Faturamento Dinâmico -->
         <div class="metric-kpi-card">
           <div class="kpi-left-info">
-            <span class="kpi-number kpi-revenue-highlight" id="kpi-monthly-revenue">R$ 6.000,00</span>
+            <span class="kpi-number kpi-revenue-highlight" id="kpi-monthly-revenue">R$ 14.400,00</span>
             <span class="kpi-label" id="kpi-label-revenue">Faturamento mensal</span>
           </div>
           <div class="kpi-icon-box">
@@ -231,7 +231,7 @@
         <!-- Novos Pacientes -->
         <div class="metric-kpi-card">
           <div class="kpi-left-info">
-            <span class="kpi-number" id="kpi-new-patients">8</span>
+            <span class="kpi-number" id="kpi-new-patients">14</span>
             <span class="kpi-label" id="kpi-label-new-patients">Novos pacientes este mês</span>
           </div>
           <div class="kpi-icon-box">
@@ -374,6 +374,125 @@
               </div>
             </div>
           </div>
+
+          <!-- ================================================================
+               CARD: GESTÃO DE AGENDA & CALENDÁRIO DE DISPONIBILIDADE
+               ================================================================ -->
+          <div class="dash-card availability-manager-card" id="secao-disponibilidade">
+            <div class="dash-card-header">
+              <div>
+                <div class="avail-title-badge-row">
+                  <h2 class="dash-card-title">Gestão de Agenda & Disponibilidade</h2>
+                  <span class="avail-badge-sync">⚡ Sincronização em Tempo Real</span>
+                </div>
+                <p style="font-size: 0.8rem; color: #64748b; margin-top: 0.25rem;">
+                  Selecione o dia e ative os horários livres. As alterações são refletidas imediatamente para os pacientes na Doctor Smart.
+                </p>
+              </div>
+
+              <!-- Seletor de Modalidade (Presencial / Teleconsulta) -->
+              <div class="avail-modality-toggle-group">
+                <button type="button" class="btn-avail-modality-tab active" id="btn-mod-presencial" data-mod="presencial">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                  Consulta Presencial
+                </button>
+                <button type="button" class="btn-avail-modality-tab" id="btn-mod-tele" data-mod="teleconsulta">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="14" x="2" y="3" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+                  Teleconsulta Online
+                </button>
+              </div>
+            </div>
+
+            <div class="availability-main-grid">
+              <!-- Lado Esquerdo: Mini Calendário Mensal -->
+              <div class="avail-cal-panel">
+                <div class="avail-cal-header-bar">
+                  <button type="button" class="btn-cal-step" id="avail-cal-prev" title="Mês anterior">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+                  </button>
+                  <strong id="avail-cal-month-title">Agosto 2026</strong>
+                  <button type="button" class="btn-cal-step" id="avail-cal-next" title="Próximo mês">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+                  </button>
+                </div>
+
+                <div class="avail-cal-table-wrap" id="avail-cal-days-table">
+                  <!-- Gerado dinamicamente via JS -->
+                </div>
+
+                <div class="avail-cal-legend-row">
+                  <span class="legend-item"><span class="legend-dot dot-active"></span> Com vagas ativas</span>
+                  <span class="legend-item"><span class="legend-dot dot-empty"></span> Sem horários</span>
+                </div>
+              </div>
+
+              <!-- Lado Direito: Editor de Horários (Turnos & Chips) -->
+              <div class="avail-slots-editor-panel">
+                <div class="avail-day-status-bar">
+                  <div>
+                    <span class="avail-kicker-label">Dia Selecionado:</span>
+                    <h4 class="avail-selected-heading" id="avail-selected-date-heading">Quarta-feira, 26 de Agosto de 2026</h4>
+                  </div>
+
+                  <div class="avail-action-buttons-group">
+                    <button type="button" class="btn-action-outline" id="btn-toggle-all-slots" title="Liberar todos ou bloquear horários deste dia">
+                      <span id="btn-toggle-all-txt">Liberar Grade Completa</span>
+                    </button>
+                    <button type="button" class="btn-action-outline" id="btn-replicate-week" title="Copiar estes horários para todas as segundas a sextas do mês">
+                      Replicar para Seg-Sex
+                    </button>
+                  </div>
+                </div>
+
+                <!-- Turnos de Atendimento -->
+                <div class="avail-shifts-container">
+                  <!-- Turno Manhã -->
+                  <div class="avail-shift-card">
+                    <div class="shift-card-header">
+                      <span class="shift-name">☀️ Manhã (08h00 - 12h30)</span>
+                      <span class="shift-count-badge" id="badge-morning-count">3 horários ativos</span>
+                    </div>
+                    <div class="avail-chips-grid" id="chips-morning-grid"></div>
+                  </div>
+
+                  <!-- Turno Tarde -->
+                  <div class="avail-shift-card">
+                    <div class="shift-card-header">
+                      <span class="shift-name">🌤️ Tarde (13h00 - 18h00)</span>
+                      <span class="shift-count-badge" id="badge-afternoon-count">3 horários ativos</span>
+                    </div>
+                    <div class="avail-chips-grid" id="chips-afternoon-grid"></div>
+                  </div>
+
+                  <!-- Turno Noite -->
+                  <div class="avail-shift-card">
+                    <div class="shift-card-header">
+                      <span class="shift-name">🌙 Noturno (18h30 - 20h30)</span>
+                      <span class="shift-count-badge" id="badge-evening-count">0 horários ativos</span>
+                    </div>
+                    <div class="avail-chips-grid" id="chips-evening-grid"></div>
+                  </div>
+                </div>
+
+                <!-- Rodapé de Salvamento -->
+                <div class="avail-footer-bar">
+                  <div class="avail-sync-info" id="avail-sync-info-txt">
+                    <span class="sync-status-icon">✓</span>
+                    <span>Alterações salvas e disponíveis na aba do paciente</span>
+                  </div>
+
+                  <button type="button" class="btn-save-availability" id="btn-save-availability">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/>
+                      <polyline points="17 21 17 13 7 13 7 21"/>
+                      <polyline points="7 3 7 8 15 8"/>
+                    </svg>
+                    Salvar Disponibilidade
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
 
         <!-- ================================================================
@@ -384,7 +503,7 @@
           <!-- Widget 1: Card do Médico Conectado -->
           <div class="dash-card doctor-profile-widget">
             <div class="widget-avatar-circle">
-              <img id="widget-avatar-img" src="https://images.unsplash.com/photo-1622253692010-333f2da6031d?auto=format&fit=crop&q=80&w=400" alt="Médico">
+              <img id="widget-avatar-img" src="assets/images/doctors/dr-jean-teste.jpg" alt="Dr. Jean (Conta Teste)">
             </div>
 
             <h3 class="widget-doc-name" id="widget-doc-name">Dr. Jean (Conta Teste)</h3>
@@ -400,7 +519,7 @@
             </a>
 
             <div class="widget-badges-row">
-              <span class="widget-badge-pill badge-patients-count" id="widget-patients-badge">52 Pacientes</span>
+              <span class="widget-badge-pill badge-patients-count" id="widget-patients-badge">184 Pacientes</span>
               <span class="widget-badge-pill badge-member-since">Desde 04 Out 2025</span>
             </div>
 
@@ -431,7 +550,7 @@
                 </div>
                 <div class="widget-stat-texts">
                   <span class="widget-stat-label">Novos pacientes</span>
-                  <strong class="widget-stat-val" id="widget-new-patients">12</strong>
+                  <strong class="widget-stat-val" id="widget-new-patients">128</strong>
                 </div>
               </div>
 
@@ -445,7 +564,7 @@
                 </div>
                 <div class="widget-stat-texts">
                   <span class="widget-stat-label">Total de casos</span>
-                  <strong class="widget-stat-val" id="widget-total-cases">139</strong>
+                  <strong class="widget-stat-val" id="widget-total-cases">476</strong>
                 </div>
               </div>
             </div>

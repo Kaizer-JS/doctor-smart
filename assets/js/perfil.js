@@ -273,17 +273,34 @@ document.addEventListener("DOMContentLoaded", () => {
   ];
 
   function getActiveSlotsMap() {
+    // 1. Tentar ler slots customizados salvos pelo médico no Painel SaaS
+    const customSaved = localStorage.getItem(`doctor_smart_custom_slots_${doc.id}`);
+    if (customSaved) {
+      try {
+        const parsed = JSON.parse(customSaved);
+        if (state.modality === "teleconsulta" && parsed.teleconsulta && Object.keys(parsed.teleconsulta).length > 0) {
+          return parsed.teleconsulta;
+        }
+        if (state.modality === "presencial" && parsed.presencial && Object.keys(parsed.presencial).length > 0) {
+          return parsed.presencial;
+        }
+      } catch (e) {
+        console.error("Erro ao ler slots sincronizados:", e);
+      }
+    }
+
+    // 2. Fallback para os slots nativos do médico
     if (state.modality === "teleconsulta") {
       return doc.slotsTeleconsulta || doc.slots || {
-        "2026-08-26": ["11:30", "17:30", "18:30", "19:00"],
+        "2026-08-26": ["11:30", "14:30", "17:30", "18:30", "19:00"],
         "2026-08-27": ["10:00", "12:30", "18:00", "19:30"],
         "2026-08-28": ["11:00", "16:30", "18:00"]
       };
     }
     return doc.slotsPresencial || doc.slots || {
-      "2026-08-26": ["09:00", "10:30", "14:00", "15:30", "16:30"],
-      "2026-08-27": ["08:30", "11:00", "14:30", "16:00"],
-      "2026-08-28": ["09:30", "10:00", "13:30", "15:00", "17:00"]
+      "2026-08-26": ["08:30", "09:30", "10:30", "11:33", "14:30", "16:30"],
+      "2026-08-27": ["08:30", "09:30", "11:00", "14:30", "16:00"],
+      "2026-08-28": ["09:00", "10:30", "14:00", "15:30", "17:00"]
     };
   }
 

@@ -636,6 +636,12 @@ body.doctor-panel-body {
   border: 1px solid #bfdbfe;
 }
 
+.status-finished {
+  background: #f1f5f9;
+  color: #475569;
+  border: 1px solid #cbd5e1;
+}
+
 .btn-open-record {
   width: 36px;
   height: 36px;
@@ -1145,6 +1151,393 @@ body.doctor-panel-body {
 
 .record-modal-body {
   padding: 1.75rem;
+}
+
+/* ==========================================================================
+   GESTÃO DE AGENDA & CALENDÁRIO DE DISPONIBILIDADE
+   ========================================================================== */
+.availability-manager-card {
+  margin-top: 1.75rem;
+  border-top: 3px solid #028090;
+}
+
+.avail-title-badge-row {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  flex-wrap: wrap;
+}
+
+.avail-badge-sync {
+  font-size: 0.725rem;
+  font-weight: 700;
+  color: #028090;
+  background: #e0f2fe;
+  padding: 0.2rem 0.6rem;
+  border-radius: 999px;
+  border: 1px solid #bae6fd;
+}
+
+.avail-modality-toggle-group {
+  display: inline-flex;
+  background: #f1f5f9;
+  padding: 4px;
+  border-radius: 8px;
+  gap: 4px;
+}
+
+.btn-avail-modality-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.45rem 0.85rem;
+  border-radius: 6px;
+  border: none;
+  background: transparent;
+  font-size: 0.825rem;
+  font-weight: 600;
+  color: #64748b;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.btn-avail-modality-tab.active {
+  background: #ffffff;
+  color: #028090;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+}
+
+.availability-main-grid {
+  display: grid;
+  grid-template-columns: 290px 1fr;
+  gap: 1.5rem;
+  margin-top: 1.25rem;
+  align-items: start;
+}
+
+/* Painel Esquerdo: Calendário */
+.avail-cal-panel {
+  background: #f8fafc;
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 1.15rem;
+}
+
+.avail-cal-header-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.85rem;
+}
+
+.avail-cal-header-bar strong {
+  font-size: 0.95rem;
+  color: #0f172a;
+}
+
+.btn-cal-step {
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  border: 1px solid #cbd5e1;
+  background: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #475569;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.btn-cal-step:hover {
+  background: #028090;
+  color: #ffffff;
+  border-color: #028090;
+}
+
+.avail-cal-table-wrap {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 4px;
+  text-align: center;
+}
+
+.avail-cal-day-header {
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: #94a3b8;
+  padding: 0.35rem 0;
+  text-transform: uppercase;
+}
+
+.avail-cal-day-cell {
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #334155;
+  cursor: pointer;
+  position: relative;
+  transition: all 0.15s ease;
+  border: 1px solid transparent;
+  background: #ffffff;
+}
+
+.avail-cal-day-cell.disabled {
+  opacity: 0.25;
+  cursor: not-allowed;
+  background: transparent;
+}
+
+.avail-cal-day-cell.has-slots {
+  border-color: #bae6fd;
+  color: #028090;
+  font-weight: 700;
+}
+
+.avail-cal-day-cell.has-slots::after {
+  content: '';
+  position: absolute;
+  bottom: 3px;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: #10b981;
+}
+
+.avail-cal-day-cell:hover:not(.disabled) {
+  background: #e0f2fe;
+  color: #028090;
+}
+
+.avail-cal-day-cell.selected {
+  background: #028090 !important;
+  color: #ffffff !important;
+  box-shadow: 0 2px 8px rgba(2, 128, 144, 0.35);
+}
+
+.avail-cal-day-cell.selected::after {
+  background: #ffffff !important;
+}
+
+.avail-cal-legend-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 1rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid #e2e8f0;
+  font-size: 0.725rem;
+  color: #64748b;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.legend-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+}
+
+.legend-dot.dot-active { background: #10b981; }
+.legend-dot.dot-empty { background: #cbd5e1; }
+
+/* Painel Direito: Editor de Horários */
+.avail-slots-editor-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 1.15rem;
+}
+
+.avail-day-status-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  padding-bottom: 0.85rem;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.avail-kicker-label {
+  font-size: 0.75rem;
+  color: #64748b;
+  text-transform: uppercase;
+  font-weight: 700;
+}
+
+.avail-selected-heading {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #0f172a;
+  margin-top: 2px;
+}
+
+.avail-action-buttons-group {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.btn-action-outline {
+  font-size: 0.775rem;
+  font-weight: 600;
+  color: #475569;
+  background: #ffffff;
+  border: 1px solid #cbd5e1;
+  padding: 0.4rem 0.75rem;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.btn-action-outline:hover {
+  background: #f8fafc;
+  border-color: #028090;
+  color: #028090;
+}
+
+.avail-shifts-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.avail-shift-card {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  padding: 0.85rem 1rem;
+}
+
+.shift-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.65rem;
+}
+
+.shift-name {
+  font-size: 0.825rem;
+  font-weight: 700;
+  color: #1e293b;
+}
+
+.shift-count-badge {
+  font-size: 0.725rem;
+  font-weight: 600;
+  color: #028090;
+  background: #e0f2fe;
+  padding: 0.15rem 0.5rem;
+  border-radius: 4px;
+}
+
+.avail-chips-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(88px, 1fr));
+  gap: 0.5rem;
+}
+
+/* Chip de Horário Clicável */
+.time-slot-toggle-chip {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  padding: 0.5rem 0.4rem;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #64748b;
+  background: #ffffff;
+  border: 1px solid #cbd5e1;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  user-select: none;
+}
+
+.time-slot-toggle-chip:hover {
+  border-color: #028090;
+  color: #028090;
+  transform: translateY(-1px);
+}
+
+.time-slot-toggle-chip.active {
+  background: #028090;
+  color: #ffffff;
+  border-color: #028090;
+  box-shadow: 0 2px 6px rgba(2, 128, 144, 0.25);
+}
+
+.time-slot-toggle-chip.active svg {
+  color: #ffffff;
+}
+
+/* Rodapé de Salvamento */
+.avail-footer-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 1rem;
+  border-top: 1px solid #f1f5f9;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.avail-sync-info {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-size: 0.8rem;
+  color: #059669;
+  font-weight: 600;
+}
+
+.sync-status-icon {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #ecfdf5;
+  border: 1px solid #a7f3d0;
+  color: #059669;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.btn-save-availability {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: #028090;
+  color: #ffffff;
+  padding: 0.65rem 1.35rem;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  font-weight: 700;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 12px rgba(2, 128, 144, 0.25);
+}
+
+.btn-save-availability:hover {
+  background: #026875;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(2, 128, 144, 0.35);
+}
+
+.btn-save-availability:active {
+  transform: translateY(0);
 }
 
 /* ==========================================================================
