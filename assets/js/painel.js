@@ -4,7 +4,12 @@
  * métricas financeiras de gestão da hora médica e sincronização via localStorage.
  */
 
+let patientChartInstance = null;
+
 document.addEventListener("DOMContentLoaded", () => {
+  // Resetar instância ao carregar página
+  patientChartInstance = null;
+
   // 1. Identificar Médico Ativo (padrão dr-jean-teste para apresentação oficial)
   const urlParams = new URLSearchParams(window.location.search);
   const currentDocId = urlParams.get("id") || "dr-jean-teste";
@@ -211,7 +216,7 @@ document.addEventListener("DOMContentLoaded", () => {
       if (elNewLabel) elNewLabel.innerText = "Novos pacientes este mês";
     }
 
-    renderPatientChart(period);
+    renderPatientChart(period, doc);
   }
 
   // ==========================================================================
@@ -297,70 +302,147 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // ==========================================================================
-  // GRÁFICO DE LINHA SVG (ESTATÍSTICAS DE PACIENTES)
+  // GRÁFICO FLUIDO, DINÂMICO E ANIMADO (CHART.JS COM GRADIENTE & CURVAS REAIS)
   // ==========================================================================
-  function renderPatientChart(period) {
-    const container = document.getElementById("patient-chart-container");
-    if (!container) return;
+  function renderPatientChart(period, doc) {
+    const canvas = document.getElementById("patientChartCanvas");
+    if (!canvas) return;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
 
-    let points, labels;
+    const targetDoc = doc || currentDoctor;
+    const priceNum = getDoctorPrice(targetDoc);
+
+    let labels = [];
+    let dataPoints = [];
+    let growthText = "+28% de novos atendimentos";
+
     if (period === "dia") {
-      points = [0, 0, 1, 1, 1, 0, 0];
-      labels = ["08h", "10h", "12h", "14h", "16h", "18h", "20h"];
+      labels = ["08:00", "09:30", "11:00", "12:30", "14:00", "15:30", "17:00", "18:30"];
+      // Curva horária com distribuição clínica natural
+      dataPoints = [0, 1, 2, 0, 1, 3, 2, 1];
+      growthText = "3 atendimentos confirmados para hoje";
     } else if (period === "ano") {
-      points = [18, 19, 20, 21, 20, 19, 20, 22, 20, 21, 20, 20];
       labels = ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"];
+      // Curva consistente demonstrando escala clínica
+      dataPoints = [5, 7, 9, 8, 12, 14, 11, 16, 19, 18, 23, 27];
+      growthText = "+145% de expansão anual na Doctor Smart";
     } else {
-      // Mês (Padrão)
-      points = [5, 5, 5, 5];
-      labels = ["Semana 1", "Semana 2", "Semana 3", "Semana 4"];
+      // Mês (Padrão) - 10 intervalos para uma curva ondulante, viva e rica
+      labels = ["01-03 Ago", "04-06 Ago", "07-09 Ago", "10-12 Ago", "13-15 Ago", "16-18 Ago", "19-21 Ago", "22-24 Ago", "25-27 Ago", "28-31 Ago"];
+      dataPoints = [2, 4, 3, 6, 7, 5, 8, 6, 9, 10];
+      growthText = "+32% de consultas em relação ao mês anterior";
     }
 
-    const maxVal = Math.max(...points, 2);
-    const height = 180;
-    const width = 600;
-    const paddingX = 40;
-    const paddingY = 20;
+    const growthEl = document.getElementById("chart-growth-txt");
+    if (growthEl) growthEl.innerText = growthText;
 
-    const stepX = (width - paddingX * 2) / (points.length - 1);
-    const scaleY = (height - paddingY * 2) / maxVal;
+    // Criar Gradiente Elegante (Teal / Emerald Doctor Smart)
+    const gradient = ctx.createLinearGradient(0, 0, 0, 220);
+    gradient.addColorStop(0, "rgba(2, 128, 144, 0.38)");
+    gradient.addColorStop(0.65, "rgba(2, 128, 144, 0.08)");
+    gradient.addColorStop(1, "rgba(2, 128, 144, 0.0)");
 
-    const coords = points.map((val, idx) => ({
-      x: paddingX + idx * stepX,
-      y: height - paddingY - val * scaleY,
-      val: val,
-      label: labels[idx]
-    }));
+    if (patientChartInstance) {
+      patientChartInstance.data.labels = labels;
+      patientChartInstance.data.datasets[0].data = dataPoints;
+      patientChartInstance.data.datasets[0].backgroundColor = gradient;
+      patientChartInstance.options.scales.y.ticks.stepSize = period === "ano" ? 5 : (period === "dia" ? 1 : 2);
+      patientChartInstance.update();
+      return;
+    }
 
-    const pathD = coords.reduce((acc, pt, idx, arr) => {
-      if (idx === 0) return `M ${pt.x} ${pt.y}`;
-      const prev = arr[idx - 1];
-      const cpX1 = prev.x + (pt.x - prev.x) / 2;
-      const cpX2 = prev.x + (pt.x - prev.x) / 2;
-      return `${acc} C ${cpX1} ${prev.y}, ${cpX2} ${pt.y}, ${pt.x} ${pt.y}`;
-    }, "");
+    if (typeof Chart === "undefined") {
+      console.warn("Chart.js ainda não carregado.");
+      return;
+    }
 
-    const dotsSvg = coords.map(pt => `
-      <circle cx="${pt.x}" cy="${pt.y}" r="4" fill="#6366f1" stroke="#ffffff" stroke-width="2">
-        <title>${pt.label}: ${pt.val} pacientes</title>
-      </circle>
-      <text x="${pt.x}" y="${height + 5}" font-size="10" fill="#64748b" text-anchor="middle">${pt.label}</text>
-    `).join("");
-
-    container.innerHTML = `
-      <svg viewBox="0 0 ${width} ${height + 25}" preserveAspectRatio="none">
-        <!-- Linhas de Grade de Fundo -->
-        <line x1="${paddingX}" y1="${paddingY}" x2="${width - paddingX}" y2="${paddingY}" stroke="#f1f5f9" stroke-width="1" />
-        <line x1="${paddingX}" y1="${height / 2}" x2="${width - paddingX}" y2="${height / 2}" stroke="#f1f5f9" stroke-width="1" />
-        <line x1="${paddingX}" y1="${height - paddingY}" x2="${width - paddingX}" y2="${height - paddingY}" stroke="#e2e8f0" stroke-width="1" />
-
-        <!-- Curva Suave -->
-        <path d="${pathD}" fill="none" stroke="#6366f1" stroke-width="3" stroke-linecap="round" />
-        
-        <!-- Pontos e Rótulos -->
-        ${dotsSvg}
-      </svg>
-    `;
+    patientChartInstance = new Chart(ctx, {
+      type: "line",
+      data: {
+        labels: labels,
+        datasets: [{
+          label: "Pacientes Atendidos",
+          data: dataPoints,
+          borderColor: "#028090",
+          borderWidth: 3.5,
+          backgroundColor: gradient,
+          fill: true,
+          tension: 0.42, // Curvatura Bezier suave e sedosa
+          pointRadius: 4.5,
+          pointHoverRadius: 8,
+          pointBackgroundColor: "#ffffff",
+          pointBorderColor: "#028090",
+          pointBorderWidth: 2.5,
+          pointHoverBackgroundColor: "#028090",
+          pointHoverBorderColor: "#ffffff",
+          pointHoverBorderWidth: 3
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        interaction: {
+          mode: "index",
+          intersect: false
+        },
+        plugins: {
+          legend: {
+            display: false
+          },
+          tooltip: {
+            backgroundColor: "rgba(15, 23, 42, 0.94)",
+            titleColor: "#f8fafc",
+            titleFont: { family: "Inter", size: 12, weight: "700" },
+            bodyColor: "#38bdf8",
+            bodyFont: { family: "Inter", size: 12, weight: "600" },
+            padding: 12,
+            cornerRadius: 8,
+            displayColors: false,
+            callbacks: {
+              title: function(context) {
+                return `📅 Período: ${context[0].label}`;
+              },
+              label: function(context) {
+                const count = context.parsed.y;
+                const rev = (count * priceNum).toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
+                return `👥 ${count} ${count === 1 ? 'paciente' : 'pacientes'} • 💰 ${rev}`;
+              }
+            }
+          }
+        },
+        scales: {
+          x: {
+            grid: {
+              display: false,
+              drawBorder: false
+            },
+            ticks: {
+              color: "#64748b",
+              font: { family: "Inter", size: 11, weight: "500" },
+              padding: 6
+            }
+          },
+          y: {
+            beginAtZero: true,
+            grid: {
+              color: "#f1f5f9",
+              drawBorder: false
+            },
+            ticks: {
+              color: "#94a3b8",
+              font: { family: "Inter", size: 11 },
+              stepSize: period === "ano" ? 5 : 2,
+              padding: 8
+            }
+          }
+        },
+        animation: {
+          duration: 750,
+          easing: "easeOutQuart"
+        }
+      }
+    });
   }
 
   // ==========================================================================

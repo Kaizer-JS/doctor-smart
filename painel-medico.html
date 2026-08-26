@@ -13,6 +13,9 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">
 
+  <!-- Chart.js para Gráficos Dinâmicos e Fluidos -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
   <!-- Estilos Dedicados do Painel -->
   <link rel="stylesheet" href="assets/css/painel.css">
 </head>
@@ -252,10 +255,21 @@
              ================================================================ -->
         <div class="dashboard-col-left">
           
-          <!-- Card 1: Estatísticas de Pacientes (Gráfico Interativo) -->
+          <!-- Card 1: Estatísticas de Pacientes (Gráfico Interativo Fluido) -->
           <div class="dash-card">
             <div class="dash-card-header">
-              <h2 class="dash-card-title">Estatísticas de pacientes</h2>
+              <div>
+                <h2 class="dash-card-title">Estatísticas de pacientes</h2>
+                <div style="display: flex; align-items: center; gap: 0.5rem; margin-top: 0.25rem;">
+                  <span class="chart-growth-badge" id="chart-growth-badge" style="display: inline-flex; align-items: center; gap: 0.25rem; font-size: 0.75rem; font-weight: 700; color: #059669; background: #ecfdf5; padding: 2px 8px; border-radius: 6px;">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                      <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/>
+                      <polyline points="17 6 23 6 23 12"/>
+                    </svg>
+                    <span id="chart-growth-txt">+28% de novos atendimentos</span>
+                  </span>
+                </div>
+              </div>
               
               <div class="chart-time-tabs">
                 <button type="button" class="chart-tab-btn" data-period="dia">Dia</button>
@@ -264,8 +278,8 @@
               </div>
             </div>
 
-            <div class="chart-svg-container" id="patient-chart-container">
-              <!-- Gráfico SVG gerado dinamicamente via JS -->
+            <div class="chart-canvas-wrap" style="position: relative; height: 230px; width: 100%; margin-top: 0.75rem;">
+              <canvas id="patientChartCanvas"></canvas>
             </div>
           </div>
 
