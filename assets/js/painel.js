@@ -227,6 +227,12 @@ document.addEventListener("DOMContentLoaded", () => {
     const crmEl = document.getElementById("widget-doc-crm");
     if (crmEl) crmEl.innerText = `${doc.crm} • ${doc.city} - ${doc.state}`;
 
+    const profileLink = document.getElementById("widget-public-profile-link");
+    if (profileLink) {
+      profileLink.href = `perfil-medico.html?id=${doc.id}`;
+      profileLink.title = `Visualizar página de perfil público de ${doc.name}`;
+    }
+
     const patientsBadge = document.getElementById("widget-patients-badge");
     if (patientsBadge) patientsBadge.innerText = `${(doc.reviewsCount || 25) + aptList.filter(a => a.isLive).length} Pacientes`;
 
