@@ -1,0 +1,8 @@
+# Ignorar scripts de automação Python e documentação no deploy do Vercel
+execution/
+directives/
+docs/
+IMAGENS-MODELO-PAG-INICIAL/
+*.py
+*.pdf
+requirements.txt
