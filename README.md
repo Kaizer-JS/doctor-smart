@@ -35,14 +35,14 @@ O projeto foi estruturado seguindo o padrão de 3 camadas para máxima confiabil
 ```
 DOCTOR SMART/
 ├── directives/       # Camada 1: Diretrizes operacionais e SOPs em Markdown
-├── execution/        # Camada 3: Scripts Python determinísticos para processamento de dados e imagens
+├── execution/        # Camada 3: Scripts Python determinísticos e requirements.txt
 ├── assets/           # Frontend: CSS customizado, Imagens tratadas e Scripts JS (app.js, data.js, etc.)
 ├── docs/             # Documentação de workflow, backlog e changelog
 ├── .tmp/             # Arquivos temporários e checkpoints de pipeline (ignorado no Git)
 ├── index.html        # Página inicial e catálogo de busca
 ├── perfil-medico.html# Página de perfil individual do médico
 ├── painel-medico.html# Portal SaaS do profissional médico
-├── requirements.txt  # Dependências Python para os scripts de execução
+├── vercel.json       # Configuração de deploy estático no Vercel
 ├── AGENTS.md         # Regras de orquestração do Agente IA
 └── README.md         # Documentação principal
 ```
@@ -71,8 +71,9 @@ Para executar scripts de validação ou processamento da base de dados médica:
 
 ```bash
 # Instalar dependências
-pip install -r requirements.txt
+pip install -r execution/requirements.txt
 
 # Validar integridade dos médicos e fotos locais
 python execution/validate_doctors.py
 ```
+
