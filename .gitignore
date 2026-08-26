@@ -1,0 +1,34 @@
+# Ambiente Virtual
+venv/
+.venv/
+env/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Variáveis de Ambiente e Segredos
+.env
+*.env.local
+credentials.json
+token.json
+
+# Arquivos Temporários e Checkpoints
+.tmp/
+*.tmp
+*.log
+
+# Arquivos Compactados Brutos / Backups
+*.zip
+*.tar.gz
+*.rar
+zip do doutro/
+
+# IDE & SO
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+

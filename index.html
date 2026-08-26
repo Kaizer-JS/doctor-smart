@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Doctor Smart · Encontre Especialistas e Agende sua Consulta</title>
+  <meta name="description" content="Encontre e reserve consultas com os melhores especialistas e profissionais de saúde. Plataforma integrada de prontuário e agendamento rápido.">
+
+  <!-- Favicon / Brand -->
+  <link rel="icon" type="image/png" href="assets/images/logo.png">
+
+  <!-- Google Fonts: Inter & Poppins -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Estilos Customizados -->
+  <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body>
+
+  <!-- ========================================================================
+       HEADER & NAVBAR FIXA
+       ======================================================================== -->
+  <header class="header-nav">
+    <div class="container">
+      <nav class="nav-wrapper">
+        <!-- Logo -->
+        <a href="index.html" class="brand-logo" title="Doctor Smart - Início">
+          <img src="assets/images/logo.png" alt="Doctor Smart Logo">
+        </a>
+
+        <!-- Links Principais -->
+        <ul class="nav-links">
+          <li><a href="#catalogo" class="nav-link active">Início</a></li>
+          <li><a href="#quem-somos" class="nav-link" onclick="alert('Doctor Smart: A plataforma inteligente de gestão clínica e agendamento médico.')">Quem somos</a></li>
+          <li><a href="#seguranca" class="nav-link" onclick="alert('Segurança de Dados: Sistema em conformidade com as diretrizes da LGPD e criptografia de ponta a ponta.')">Segurança de dados</a></li>
+        </ul>
+
+        <!-- Ações do Header -->
+        <div class="nav-actions">
+          <a href="painel-medico.html?id=dr-jean-teste" class="btn-register" style="background: #091322; border: 1px solid #1e293b; color: #38bdf8; display: inline-flex; align-items: center; gap: 0.4rem;" title="Acessar o Painel SaaS do Médico">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+              <polyline points="9 22 9 12 15 12 15 22"/>
+            </svg>
+            Portal do Médico
+          </a>
+          <button type="button" class="btn-login" onclick="alert('Área de login seguro de pacientes e clínicas.')">
+            Entrar
+          </button>
+          <button type="button" class="btn-register" onclick="alert('Cadastro de novos pacientes ou credenciamento de profissionais de saúde.')">
+            Cadastre-se
+          </button>
+        </div>
+
+        <!-- Menu Mobile Button -->
+        <button type="button" class="mobile-menu-toggle" aria-label="Abrir menu mobile" onclick="alert('Menu Doctor Smart')">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <line x1="3" y1="18" x2="21" y2="18"></line>
+          </svg>
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ========================================================================
+       HERO COMPACTO / BARRA DE TÍTULO
+       ======================================================================== -->
+  <section class="hero-compact">
+    <div class="container">
+      <div class="hero-content">
+        <div class="hero-title-group">
+          <h1>Encontre um especialista</h1>
+          <p>Agende consultas presenciais ou teleconsultas com profissionais qualificados e verificados.</p>
+        </div>
+        <div id="results-count-badge" class="hero-badge-count">
+          Carregando especialistas...
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================================================
+       CONTEÚDO PRINCIPAL (SIDEBAR + CATÁLOGO)
+       ======================================================================== -->
+  <main class="main-wrapper" id="catalogo">
+    <div class="container">
+      <div class="catalog-layout">
+
+        <!-- ==================================================================
+             SIDEBAR DE FILTROS AVANÇADOS
+             ================================================================== -->
+        <aside class="filters-sidebar">
+          <div class="filters-card">
+            <div class="filters-header">
+              <span class="filters-title">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
+                </svg>
+                Filtros de busca
+              </span>
+              <button type="button" id="btn-reset-filters" class="btn-reset-filters">
+                Limpar filtros
+              </button>
+            </div>
+
+            <!-- Busca por Nome / Palavra-chave -->
+            <div class="filter-group">
+              <label for="search-input" class="filter-label">Nome ou Especialidade</label>
+              <div class="search-input-wrapper">
+                <span class="search-icon">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                  </svg>
+                </span>
+                <input type="text" id="search-input" placeholder="Pesquisar por nome, CRM...">
+              </div>
+            </div>
+
+            <!-- Modalidade de Atendimento -->
+            <div class="filter-group">
+              <label class="filter-label">Modalidade de Atendimento</label>
+              <div class="modality-buttons">
+                <button type="button" class="btn-modality" data-modality="in_person">
+                  Somente presencial
+                </button>
+                <button type="button" class="btn-modality" data-modality="teleconsultation">
+                  Somente teleconsulta
+                </button>
+              </div>
+            </div>
+
+            <!-- Acordeon: Especialidades -->
+            <div class="accordion-item open">
+              <button type="button" class="accordion-header">
+                <span>Especialidades</span>
+                <span class="accordion-icon">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="6 9 12 15 18 9"></polyline>
+                  </svg>
+                </span>
+              </button>
+              <div class="accordion-body" id="specialties-filter-list">
+                <!-- Checkboxes inseridos via JavaScript -->
+              </div>
+            </div>
+
+            <!-- Acordeon: Cidades / Região -->
+            <div class="accordion-item">
+              <button type="button" class="accordion-header">
+                <span>Cidades (Bahia)</span>
+                <span class="accordion-icon">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="6 9 12 15 18 9"></polyline>
+                  </svg>
+                </span>
+              </button>
+              <div class="accordion-body" id="cities-filter-list">
+                <!-- Checkboxes inseridos via JavaScript -->
+              </div>
+            </div>
+
+            <!-- Acordeon: Convênios Aceitos -->
+            <div class="accordion-item">
+              <button type="button" class="accordion-header">
+                <span>Convênios Aceitos</span>
+                <span class="accordion-icon">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="6 9 12 15 18 9"></polyline>
+                  </svg>
+                </span>
+              </button>
+              <div class="accordion-body" id="insurances-filter-list">
+                <!-- Checkboxes inseridos via JavaScript -->
+              </div>
+            </div>
+
+          </div>
+        </aside>
+
+        <!-- ==================================================================
+             CATÁLOGO / LISTAGEM DE CARDS DE MÉDICOS
+             ================================================================== -->
+        <section class="doctors-list-section">
+          <!-- Barra de Contagem e Ranqueamento / Ordenação -->
+          <div class="catalog-results-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem; flex-wrap: wrap; gap: 0.75rem; background: #ffffff; padding: 0.85rem 1.25rem; border-radius: 8px; border: 1px solid #e2e8f0;">
+            <div style="font-size: 0.95rem; font-weight: 700; color: #0f172a; display: flex; align-items: center; gap: 0.45rem;">
+              <span id="results-count-number">16</span> especialistas encontrados
+            </div>
+
+            <div style="display: flex; align-items: center; gap: 0.65rem; font-size: 0.85rem; color: #475569;">
+              <label for="sort-select" style="font-weight: 600;">Ordenar por:</label>
+              <select id="sort-select" style="padding: 0.45rem 0.85rem; border-radius: 6px; border: 1px solid #cbd5e1; background: #fff; font-size: 0.85rem; font-weight: 600; color: #0f172a; cursor: pointer;">
+                <option value="relevance">Relevância / Doctor Smart Score</option>
+                <option value="rating_desc">Melhor Avaliados (5.0 a 1.0)</option>
+                <option value="reviews_desc">Mais Avaliados (Número de Opiniões)</option>
+                <option value="price_asc">Menor Valor de Consulta</option>
+                <option value="price_desc">Maior Valor de Consulta</option>
+                <option value="name_asc">Nome (A - Z)</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="doctors-list" id="doctors-list-container">
+            <!-- Cards renderizados dinamicamente via JS -->
+          </div>
+        </section>
+
+      </div>
+    </div>
+  </main>
+
+  <!-- ========================================================================
+       MODAL DE PERFIL DO MÉDICO & AGENDA INTERATIVA
+       ======================================================================== -->
+  <div class="modal-backdrop" id="doctor-modal" role="dialog" aria-modal="true">
+    <div class="modal-container">
+      <button type="button" class="modal-close-btn" id="modal-close-btn" aria-label="Fechar modal">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+      <div id="doctor-modal-content">
+        <!-- Preenchido dinamicamente via JS -->
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================================
+       MODAL DE FINALIZAÇÃO E CONFIRMAÇÃO DE AGENDAMENTO
+       ======================================================================== -->
+  <div class="modal-backdrop" id="booking-modal" role="dialog" aria-modal="true">
+    <div class="modal-container" style="max-width: 600px;">
+      <button type="button" class="modal-close-btn" id="booking-close-btn" aria-label="Fechar modal">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+      <div id="booking-modal-content">
+        <!-- Preenchido dinamicamente via JS -->
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================================
+       FOOTER OFICIAL DOCTOR SMART
+       ======================================================================== -->
+  <footer class="footer-main">
+    <div class="container">
+      <div class="footer-content">
+        <!-- Logo Grande do Footer -->
+        <div class="footer-logo">
+          <img src="assets/images/logo_big.png" alt="Doctor Smart">
+        </div>
+
+        <div class="footer-divider"></div>
+
+        <!-- Links de Navegação -->
+        <ul class="footer-nav-list">
+          <li><a href="#catalogo">Início</a></li>
+          <li><a href="#quem-somos" onclick="alert('Doctor Smart: Conectando pacientes a médicos com tecnologia e segurança.')">Quem somos</a></li>
+          <li><a href="#seguranca" onclick="alert('Segurança de dados e conformidade com LGPD.')">Segurança de dados</a></li>
+        </ul>
+
+        <!-- Informações e Redes Sociais -->
+        <div class="footer-grid-info">
+          <!-- Coluna 1: Razão Social -->
+          <div class="footer-col">
+            <h4>Doctor Smart Brasil</h4>
+            <p>Doctor Smart Brasil Serviços Online e Software Ltda</p>
+            <p style="margin-top: 0.5rem; font-size: 0.8rem; color: #64748b;">CNPJ: 58.412.984/0001-30</p>
+          </div>
+
+          <!-- Coluna 2: Contatos -->
+          <div class="footer-col">
+            <h4>Atendimento</h4>
+            <a href="https://wa.me/5571992723206?text=Ol%C3%A1%2C%20gostaria%20de%20informa%C3%A7%C3%B5es%20sobre%20a%20Doctor%20Smart" target="_blank" rel="noopener">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: -2px; margin-right: 4px;">
+                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+              </svg>
+              (71) 99272-3206
+            </a>
+            <a href="mailto:suporte@doctorsmart.com.br" style="margin-top: 0.35rem;">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: -2px; margin-right: 4px;">
+                <rect width="20" height="16" x="2" y="4" rx="2"></rect>
+                <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
+              </svg>
+              suporte@doctorsmart.com.br
+            </a>
+            <p style="margin-top: 0.35rem; font-size: 0.825rem;">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: -2px; margin-right: 4px;">
+                <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"></path>
+                <circle cx="12" cy="10" r="3"></circle>
+              </svg>
+              Rua Lafaiete F. dos Santos, 153 - Centro, Lauro de Freitas - BA, 42703-100
+            </p>
+          </div>
+
+          <!-- Coluna 3: Redes Sociais -->
+          <div class="footer-col">
+            <h4>Redes Sociais</h4>
+            <div class="footer-social-links">
+              <a href="https://www.instagram.com/doctorsmartofc" class="btn-social" target="_blank" rel="noopener">
+                <img src="assets/images/instagram.png" alt="Instagram">
+                Instagram
+              </a>
+              <a href="https://www.linkedin.com/in/doctor-smart-ab8605350/" class="btn-social" target="_blank" rel="noopener">
+                <img src="assets/images/linkedin.png" alt="LinkedIn">
+                LinkedIn
+              </a>
+              <a href="https://www.facebook.com/people/Doctor-Smart/61572455206100" class="btn-social" target="_blank" rel="noopener">
+                <img src="assets/images/facebook.png" alt="Facebook">
+                Facebook
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Mapa Localização -->
+        <div class="footer-map-container">
+          <a href="https://www.google.com.br/maps/place/Doctor+Smart/@-12.8972243,-38.3307209,18z" target="_blank" rel="noopener" title="Ver no Google Maps">
+            <img src="https://maps.googleapis.com/maps/api/staticmap?size=2048x300&key=AIzaSyD3PNLcVDYMEiYHZSDbA6ja7KM5eoTD4-0&center=-12.8972661%2C-38.32904&scale=2&maptype=roadmap&markers=color%3Ablue%7Clabel%3AS%7C-12.8972661%2C-38.32904&zoom=16" alt="Localização Doctor Smart Lauro de Freitas BA">
+          </a>
+        </div>
+
+        <div class="footer-copyright">
+          © 2026 Doctor Smart Brasil · Todos os direitos reservados.
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="assets/js/data.js"></script>
+  <script src="assets/js/app.js"></script>
+</body>
+</html>

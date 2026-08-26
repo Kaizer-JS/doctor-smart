@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title id="page-title">Perfil do Médico · Doctor Smart</title>
+  <meta name="description" content="Agende consultas presenciais ou teleconsultas com especialistas credenciados na Doctor Smart.">
+
+  <!-- Favicon / Brand -->
+  <link rel="icon" type="image/png" href="assets/images/logo.png">
+
+  <!-- Google Fonts: Inter & Poppins -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- CSS Global e CSS Dedicado do Perfil -->
+  <link rel="stylesheet" href="assets/css/styles.css">
+  <link rel="stylesheet" href="assets/css/perfil.css">
+</head>
+<body class="profile-body">
+
+  <!-- ========================================================================
+       HEADER & NAVBAR FIXA
+       ======================================================================== -->
+  <header class="header-nav">
+    <div class="container">
+      <nav class="nav-wrapper">
+        <a href="index.html" class="brand-logo" title="Doctor Smart - Início">
+          <img src="assets/images/logo.png" alt="Doctor Smart Logo">
+        </a>
+
+        <ul class="nav-links">
+          <li><a href="index.html" class="nav-link">Início</a></li>
+          <li><a href="index.html#quem-somos" class="nav-link" onclick="alert('Doctor Smart: A plataforma inteligente de gestão clínica e agendamento médico.')">Quem somos</a></li>
+          <li><a href="index.html#seguranca" class="nav-link" onclick="alert('Segurança de Dados: Sistema em conformidade com as diretrizes da LGPD e criptografia de ponta a ponta.')">Segurança de dados</a></li>
+        </ul>
+
+        <div class="nav-actions">
+          <a href="painel-medico.html?id=dr-jean-teste" class="btn-register" style="background: #091322; border: 1px solid #1e293b; color: #38bdf8; display: inline-flex; align-items: center; gap: 0.4rem;" title="Acessar o Painel SaaS do Médico">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+              <polyline points="9 22 9 12 15 12 15 22"/>
+            </svg>
+            Portal do Médico
+          </a>
+          <button type="button" class="btn-login" onclick="alert('Acesso ao portal de pacientes e médicos.')">
+            Entrar
+          </button>
+          <button type="button" class="btn-register" onclick="alert('Cadastro de novos pacientes ou credenciamento de profissionais de saúde.')">
+            Cadastre-se
+          </button>
+        </div>
+
+        <button type="button" class="mobile-menu-toggle" aria-label="Abrir menu mobile" onclick="alert('Menu Doctor Smart')">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <line x1="3" y1="18" x2="21" y2="18"></line>
+          </svg>
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ========================================================================
+       BARRA DE BREADCRUMBS
+       ======================================================================== -->
+  <div class="profile-breadcrumbs-bar">
+    <div class="container-profile">
+      <div class="profile-breadcrumb-list">
+        <a href="index.html">Início</a>
+        <span>&gt;</span>
+        <a href="index.html">Especialistas</a>
+        <span>&gt;</span>
+        <span id="breadcrumb-specialty">Especialidade</span>
+        <span>&gt;</span>
+        <span class="current" id="breadcrumb-doc-name">Dr. Médico</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================================
+       CONTEÚDO PRINCIPAL DO PERFIL
+       ======================================================================== -->
+  <main style="padding-bottom: 3rem;">
+    <div class="container-profile">
+
+      <!-- ====================================================================
+           1. HERO CARD DO MÉDICO (BANNER + AVATAR + INFOS)
+           ==================================================================== -->
+      <section class="profile-hero-container">
+        <div class="profile-cover-header" id="hero-cover-bg">
+          <div class="profile-cover-pattern"></div>
+          <div class="profile-cover-badge">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+            </svg>
+            <span id="doc-hero-badge-spec">Especialista Verificado</span>
+          </div>
+        </div>
+
+        <div class="profile-hero-body">
+          <div class="profile-avatar-circle">
+            <img src="" alt="Foto do Médico" id="doc-profile-avatar" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1622253692010-333f2da6031d?auto=format&fit=crop&q=80&w=400';">
+          </div>
+
+          <div class="profile-doc-name-wrap">
+            <h1 class="profile-doc-name" id="doc-profile-name">
+              Carregando...
+            </h1>
+            <div class="profile-doc-crm" id="doc-profile-crm">
+              CRM-BA 0000 • Especialidade
+            </div>
+            <div class="profile-doc-rating" id="doc-profile-stars">
+              <!-- Renderizado dinamicamente -->
+            </div>
+          </div>
+
+          <div class="profile-quick-actions">
+            <a href="#agendamento-card" class="btn-profile-book">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect width="18" height="18" x="3" y="4" rx="2" ry="2"></rect>
+                <line x1="16" y1="2" x2="16" y2="6"></line>
+                <line x1="8" y1="2" x2="8" y2="6"></line>
+                <line x1="3" y1="10" x2="21" y2="10"></line>
+              </svg>
+              Agendar Consulta
+            </a>
+
+            <a href="#" target="_blank" rel="noopener" class="btn-profile-whatsapp" id="btn-doc-whatsapp">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+              </svg>
+              WhatsApp
+            </a>
+
+            <button type="button" class="btn-profile-share" title="Copiar link do perfil" onclick="navigator.clipboard.writeText(window.location.href); alert('Link do perfil copiado com sucesso!');">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="18" cy="5" r="3"></circle>
+                <circle cx="6" cy="12" r="3"></circle>
+                <circle cx="18" cy="19" r="3"></circle>
+                <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
+                <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
+              </svg>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ====================================================================
+           2. CARD DE ESPECIALIDADE & SERVIÇOS
+           ==================================================================== -->
+      <section class="profile-specialty-card">
+        <h2 class="specialty-title-main" id="doc-card-specialty-title">Especialidade Médica</h2>
+
+        <div class="specialty-grid-details">
+          <!-- Modalidades -->
+          <div class="specialty-item-row">
+            <div class="specialty-icon-box">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path>
+                <circle cx="12" cy="7" r="4"></circle>
+              </svg>
+            </div>
+            <div class="specialty-content-text">
+              <strong>Modalidades de Atendimento:</strong>
+              <ul class="specialty-sublist" id="doc-modalities-sublist">
+                <li>Consulta Presencial em Consultório</li>
+                <li>Teleconsulta Online via Vídeo Integrado</li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Convênios -->
+          <div class="specialty-item-row">
+            <div class="specialty-icon-box">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect width="20" height="14" x="2" y="5" rx="2"></rect>
+                <line x1="2" y1="10" x2="22" y2="10"></line>
+              </svg>
+            </div>
+            <div class="specialty-content-text">
+              <strong>Convênios e Planos Aceitos:</strong>
+              <div style="margin-top: 0.35rem; display: flex; flex-wrap: wrap; gap: 0.4rem;" id="doc-insurances-badge-wrap">
+                <!-- Badges de Convênios -->
+              </div>
+            </div>
+          </div>
+
+          <!-- Experiência -->
+          <div class="specialty-item-row">
+            <div class="specialty-icon-box">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+              </svg>
+            </div>
+            <div class="specialty-content-text">
+              <strong>Áreas de Foco e Experiência Clínica:</strong>
+              <p style="margin-top: 0.25rem; color: #475569;" id="doc-experience-desc"></p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ====================================================================
+           3. WIDGET DE AGENDAMENTO INTERATIVO (CALENDÁRIO & HORÁRIOS)
+           ==================================================================== -->
+      <section class="booking-full-card" id="agendamento-card">
+        <div class="booking-header-bar">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect width="18" height="18" x="3" y="4" rx="2" ry="2"></rect>
+            <line x1="16" y1="2" x2="16" y2="6"></line>
+            <line x1="8" y1="2" x2="8" y2="6"></line>
+            <line x1="3" y1="10" x2="21" y2="10"></line>
+          </svg>
+          <h3>Agende agora sua consulta</h3>
+        </div>
+
+        <div class="booking-card-inner">
+          <!-- Alternador de Modalidade -->
+          <div class="booking-tabs-selector">
+            <button type="button" class="tab-btn-pill active" id="tab-opt-presencial">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path>
+                <circle cx="12" cy="7" r="4"></circle>
+              </svg>
+              Consulta Presencial
+            </button>
+            <button type="button" class="tab-btn-pill" id="tab-opt-tele">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect width="18" height="12" x="3" y="4" rx="2"></rect>
+                <path d="M12 16v4"></path>
+                <path d="M8 20h8"></path>
+              </svg>
+              Teleconsulta Online
+            </button>
+          </div>
+
+          <!-- Seletor de Localização -->
+          <div class="booking-location-selector">
+            <select class="location-dropdown" id="doc-location-select">
+              <option value="principal" id="doc-location-option-text">Consultório Principal</option>
+            </select>
+          </div>
+
+          <!-- Layout do Calendário e Slots (2 Colunas) -->
+          <div class="calendar-and-slots-layout">
+            <!-- Coluna Esquerda: Calendário de Dias -->
+            <div class="custom-calendar-box">
+              <div class="cal-month-nav">
+                <button type="button" class="cal-nav-arrow" id="cal-btn-prev">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="15 18 9 12 15 6"></polyline>
+                  </svg>
+                </button>
+                <span class="cal-month-name" id="cal-title-text">Agosto 2026</span>
+                <button type="button" class="cal-nav-arrow" id="cal-btn-next">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="9 18 15 12 9 6"></polyline>
+                  </svg>
+                </button>
+              </div>
+
+              <div class="cal-days-grid" id="cal-days-table">
+                <div class="cal-day-header">Seg</div>
+                <div class="cal-day-header">Ter</div>
+                <div class="cal-day-header">Qua</div>
+                <div class="cal-day-header">Qui</div>
+                <div class="cal-day-header">Sex</div>
+                <div class="cal-day-header">Sáb</div>
+                <div class="cal-day-header">Dom</div>
+
+                <!-- Dias gerados dinamicamente via JS -->
+              </div>
+            </div>
+
+            <!-- Coluna Direita: Horários Disponíveis -->
+            <div class="slots-column-box">
+              <div class="slots-column-title">
+                Horários disponíveis: <span id="slot-selected-date-heading">Qua, 26 Ago</span>
+              </div>
+
+              <div class="slots-scroll-list" id="slots-button-list">
+                <!-- Botões de horários inseridos via JS -->
+              </div>
+            </div>
+          </div>
+
+          <!-- Rodapé do Card com Preço e Ação -->
+          <div class="booking-footer-action">
+            <div class="price-summary-tag">
+              <span>Investimento da Consulta:</span>
+              <strong id="booking-footer-price">R$ 0,00</strong>
+            </div>
+
+            <button type="button" class="btn-confirm-slot" id="btn-trigger-booking" disabled>
+              Continuar Agendamento
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+                <polyline points="12 5 19 12 12 19"></polyline>
+              </svg>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ====================================================================
+           4. 3 CARDS DE RESUMO (FORMAÇÃO, LOCALIZAÇÃO, CONVÊNIOS)
+           ==================================================================== -->
+      <section class="summary-three-cards-grid">
+        <div class="card-feature-box">
+          <div class="card-feature-title">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M22 10v6M2 10l10-5 10 5-10 5z"></path>
+              <path d="M6 12v5c3 3 9 3 12 0v-5"></path>
+            </svg>
+            Formação Acadêmica
+          </div>
+          <ul class="card-feature-list" id="mini-education-list">
+            <li>Graduação em Medicina reconhecida pelo MEC</li>
+            <li>Residência Médica com RQE verificado</li>
+            <li>Membro Titular de Sociedades de Especialidade</li>
+          </ul>
+        </div>
+
+        <div class="card-feature-box">
+          <div class="card-feature-title">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"></path>
+              <circle cx="12" cy="10" r="3"></circle>
+            </svg>
+            Localização
+          </div>
+          <ul class="card-feature-list">
+            <li id="mini-location-address">Salvador, BA</li>
+            <li>Estacionamento privativo no local</li>
+            <li>Acessibilidade para cadeirantes</li>
+          </ul>
+        </div>
+
+        <div class="card-feature-box">
+          <div class="card-feature-title">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect width="20" height="14" x="2" y="5" rx="2"></rect>
+              <line x1="2" y1="10" x2="22" y2="10"></line>
+            </svg>
+            Convênios &amp; Pagamentos
+          </div>
+          <ul class="card-feature-list" id="mini-insurances-list">
+            <li>Planos de saúde aceitos</li>
+            <li>Particular com emissão de nota para reembolso</li>
+            <li>Pagamento em Pix, Débito e Cartão de Crédito</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- ====================================================================
+           5. SEÇÃO ESCURA OFICIAL: BIOGRAFIA & INFORMAÇÕES DETALHADAS
+           ==================================================================== -->
+      <section class="dark-biography-section">
+        <div class="dark-bio-header">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#60a5fa" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
+            <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
+          </svg>
+          Biografia &amp; Informações do Especialista
+        </div>
+
+        <div class="dark-bio-content">
+          <!-- Sobre o Médico -->
+          <div class="dark-bio-block">
+            <h4>Sobre o Médico</h4>
+            <p id="dark-bio-text">
+              Médico com sólida atuação clínica, dedicado ao diagnóstico preciso e tratamento humanizado.
+            </p>
+          </div>
+
+          <!-- Formação Acadêmica e Títulos -->
+          <div class="dark-bio-block">
+            <h4>Formação Acadêmica &amp; Certificados</h4>
+            <ul id="dark-education-list">
+              <li>Graduação em Medicina pela Universidade Federal da Bahia (UFBA).</li>
+              <li>Residência Médica em centro de referência hospitalar.</li>
+              <li>Membro Titular de Sociedades de Especialistas e Registro de Qualificação de Especialista (RQE).</li>
+            </ul>
+          </div>
+
+          <!-- Locais de Atendimento -->
+          <div class="dark-bio-block">
+            <h4>Locais de Atendimento</h4>
+            <p id="dark-address-text">
+              Consultório Médico estruturado com recepção climatizada e equipamentos modernos.
+            </p>
+          </div>
+
+          <!-- Diferenciais da Plataforma -->
+          <div class="dark-bio-block">
+            <h4>Diferenciais do Atendimento Doctor Smart</h4>
+            <ul>
+              <li><strong>Prontuário Digital Seguro:</strong> Prescrições e exames com assinatura digital e conformidade total com a LGPD.</li>
+              <li><strong>Retorno Incluso:</strong> Direito a consulta de retorno e avaliação de exames em até 30 dias.</li>
+              <li><strong>Comunicação Ágil:</strong> Lembretes de agendamento e suporte direto via WhatsApp.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- ====================================================================
+           6. MAPA DE LOCALIZAÇÃO DO CONSULTÓRIO
+           ==================================================================== -->
+      <section class="map-full-card">
+        <div class="map-card-title">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#028090" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"></path>
+            <circle cx="12" cy="10" r="3"></circle>
+          </svg>
+          Localização do Consultório no Mapa
+        </div>
+
+        <div class="map-iframe-container">
+          <iframe
+            id="map-embed-frame"
+            width="100%"
+            height="280"
+            style="border:0;"
+            loading="lazy"
+            allowfullscreen
+            src="https://maps.google.com/maps?q=Salvador+Bahia&t=&z=14&ie=UTF8&iwloc=&output=embed">
+          </iframe>
+        </div>
+      </section>
+
+      <!-- ====================================================================
+           7. AVALIAÇÕES E OPINIÕES DOS PACIENTES
+           ==================================================================== -->
+      <section class="reviews-full-card">
+        <div class="reviews-card-title">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+          </svg>
+          Avaliações de Pacientes
+        </div>
+
+        <!-- Média e Barras -->
+        <div class="reviews-score-and-bars">
+          <div class="big-rating-box">
+            <div class="big-num-score" id="score-big-number">5.0</div>
+            <div class="stars-gold" id="score-stars-gold" style="margin: 0.35rem 0;"></div>
+            <span style="font-size: 0.8rem; color: #64748b;" id="score-total-text">14 avaliações</span>
+          </div>
+
+          <div class="bars-list-group">
+            <div class="metric-bar-item">
+              <span>Atendimento e Empatia</span>
+              <div class="bar-progress-track"><div class="bar-progress-fill" style="width: 100%;"></div></div>
+              <span class="val-metric-num">5.0</span>
+            </div>
+            <div class="metric-bar-item">
+              <span>Pontualidade</span>
+              <div class="bar-progress-track"><div class="bar-progress-fill" style="width: 96%;"></div></div>
+              <span class="val-metric-num">4.8</span>
+            </div>
+            <div class="metric-bar-item">
+              <span>Clareza nas Orientações</span>
+              <div class="bar-progress-track"><div class="bar-progress-fill" style="width: 100%;"></div></div>
+              <span class="val-metric-num">5.0</span>
+            </div>
+            <div class="metric-bar-item">
+              <span>Conhecimento e Segurança</span>
+              <div class="bar-progress-track"><div class="bar-progress-fill" style="width: 100%;"></div></div>
+              <span class="val-metric-num">5.0</span>
+            </div>
+            <div class="metric-bar-item">
+              <span>Instalações da Clínica</span>
+              <div class="bar-progress-track"><div class="bar-progress-fill" style="width: 98%;"></div></div>
+              <span class="val-metric-num">4.9</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Lista de Depoimentos -->
+        <div class="testimonials-list" id="testimonials-list-box">
+          <!-- Inserido dinamicamente via JS -->
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- ========================================================================
+       MODAL DE CONFIRMAÇÃO DE AGENDAMENTO
+       ======================================================================== -->
+  <div class="modal-backdrop-profile" id="modal-booking-popup" role="dialog" aria-modal="true">
+    <div class="modal-box-profile">
+      <button type="button" class="modal-close-icon-btn" id="modal-booking-close" aria-label="Fechar">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+
+      <div id="modal-booking-dynamic-body">
+        <!-- Renderizado dinamicamente pelo JavaScript -->
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================================
+       FOOTER OFICIAL DOCTOR SMART
+       ======================================================================== -->
+  <footer class="footer-main">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-logo">
+          <img src="assets/images/logo_big.png" alt="Doctor Smart">
+        </div>
+
+        <div class="footer-divider"></div>
+
+        <ul class="footer-nav-list">
+          <li><a href="index.html">Início</a></li>
+          <li><a href="index.html#quem-somos" onclick="alert('Doctor Smart: Conectando pacientes a médicos com tecnologia e segurança.')">Quem somos</a></li>
+          <li><a href="index.html#seguranca" onclick="alert('Segurança de dados e conformidade com LGPD.')">Segurança de dados</a></li>
+        </ul>
+
+        <div class="footer-grid-info">
+          <div class="footer-col">
+            <h4>Doctor Smart Brasil</h4>
+            <p>Doctor Smart Brasil Serviços Online e Software Ltda</p>
+            <p style="margin-top: 0.5rem; font-size: 0.8rem; color: #64748b;">CNPJ: 58.412.984/0001-30</p>
+          </div>
+
+          <div class="footer-col">
+            <h4>Atendimento</h4>
+            <a href="https://wa.me/5571992723206?text=Ol%C3%A1%2C%20gostaria%20de%20informa%C3%A7%C3%B5es%20sobre%20a%20Doctor%20Smart" target="_blank" rel="noopener">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: -2px; margin-right: 4px;">
+                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+              </svg>
+              (71) 99272-3206
+            </a>
+            <a href="mailto:suporte@doctorsmart.com.br" style="margin-top: 0.35rem;">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: -2px; margin-right: 4px;">
+                <rect width="20" height="16" x="2" y="4" rx="2"></rect>
+                <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
+              </svg>
+              suporte@doctorsmart.com.br
+            </a>
+            <p style="margin-top: 0.35rem; font-size: 0.825rem;">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: -2px; margin-right: 4px;">
+                <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"></path>
+                <circle cx="12" cy="10" r="3"></circle>
+              </svg>
+              Rua Lafaiete F. dos Santos, 153 - Centro, Lauro de Freitas - BA, 42703-100
+            </p>
+          </div>
+
+          <div class="footer-col">
+            <h4>Redes Sociais</h4>
+            <div class="footer-social-links">
+              <a href="https://www.instagram.com/doctorsmartofc" class="btn-social" target="_blank" rel="noopener">
+                <img src="assets/images/instagram.png" alt="Instagram">
+                Instagram
+              </a>
+              <a href="https://www.linkedin.com/in/doctor-smart-ab8605350/" class="btn-social" target="_blank" rel="noopener">
+                <img src="assets/images/linkedin.png" alt="LinkedIn">
+                LinkedIn
+              </a>
+              <a href="https://www.facebook.com/people/Doctor-Smart/61572455206100" class="btn-social" target="_blank" rel="noopener">
+                <img src="assets/images/facebook.png" alt="Facebook">
+                Facebook
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <div class="footer-map-container">
+          <a href="https://www.google.com.br/maps/place/Doctor+Smart/@-12.8972243,-38.3307209,18z" target="_blank" rel="noopener" title="Ver no Google Maps">
+            <img src="https://maps.googleapis.com/maps/api/staticmap?size=2048x300&key=AIzaSyD3PNLcVDYMEiYHZSDbA6ja7KM5eoTD4-0&center=-12.8972661%2C-38.32904&scale=2&maptype=roadmap&markers=color%3Ablue%7Clabel%3AS%7C-12.8972661%2C-38.32904&zoom=16" alt="Localização Doctor Smart Lauro de Freitas BA">
+          </a>
+        </div>
+
+        <div class="footer-copyright">
+          © 2026 Doctor Smart Brasil · Todos os direitos reservados.
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="assets/js/data.js"></script>
+  <script src="assets/js/perfil.js"></script>
+</body>
+</html>

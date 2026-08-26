@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Portal do Profissional · Doctor Smart</title>
+  
+  <!-- Favicon Oficial / Brand -->
+  <link rel="icon" type="image/png" href="assets/images/logo.png">
+
+  <!-- Google Fonts: Inter & Poppins -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Estilos Dedicados do Painel -->
+  <link rel="stylesheet" href="assets/css/painel.css">
+</head>
+<body class="doctor-panel-body">
+
+  <!-- ======================================================================
+       1. SIDEBAR LATERAL ESCURA (OFICIAL DOCTOR SMART)
+       ====================================================================== -->
+  <aside class="panel-sidebar">
+    <div class="panel-sidebar-header">
+      <a href="index.html" class="sidebar-brand-logo" title="Doctor Smart - Voltar ao Início">
+        <img src="assets/images/logo.png" alt="Doctor Smart Logo" style="height: 36px; width: auto; max-width: 175px; object-fit: contain;">
+      </a>
+    </div>
+
+    <nav class="panel-sidebar-nav">
+      <!-- Painel Principal -->
+      <a href="painel-medico.html" class="sidebar-nav-item active">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+          <polyline points="9 22 9 12 15 12 15 22"/>
+        </svg>
+        Painel
+      </a>
+
+      <!-- Elementos de Interface -->
+      <div class="sidebar-nav-group">
+        <span class="sidebar-group-title">Elementos de Interface</span>
+        <a href="#pacientes" class="sidebar-nav-item" onclick="alert('Módulo de Gestão de Pacientes: todos os pacientes sincronizados do consultório.'); return false;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
+            <circle cx="9" cy="7" r="4"/>
+            <path d="M22 21v-2a4 4 0 0 0-3-3.87"/>
+            <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+          </svg>
+          Pacientes
+        </a>
+        <a href="#documentos" class="sidebar-nav-item" onclick="alert('Módulo de Prontuários e Documentos Digitais.'); return false;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+            <polyline points="14 2 14 8 20 8"/>
+            <line x1="16" y1="13" x2="8" y2="13"/>
+            <line x1="16" y1="17" x2="8" y2="17"/>
+            <polyline points="10 9 9 9 8 9"/>
+          </svg>
+          Documentos
+        </a>
+      </div>
+
+      <!-- Consultas -->
+      <div class="sidebar-nav-group">
+        <span class="sidebar-group-title">Consultas</span>
+        <a href="#consultas-hoje" class="sidebar-nav-item" onclick="window.DoctorSmartPanel.openHistoryModal('hoje'); return false;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect width="18" height="18" x="3" y="4" rx="2" ry="2"/>
+            <line x1="16" y1="2" x2="16" y2="6"/>
+            <line x1="8" y1="2" x2="8" y2="6"/>
+            <line x1="3" y1="10" x2="21" y2="10"/>
+          </svg>
+          Consultas do dia
+        </a>
+        <a href="#consultas-anteriores" class="sidebar-nav-item" onclick="window.DoctorSmartPanel.openHistoryModal('anteriores'); return false;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"/>
+            <polyline points="12 6 12 12 16 14"/>
+          </svg>
+          Consultas anteriores
+        </a>
+        <a href="#proximas-consultas" class="sidebar-nav-item" onclick="window.DoctorSmartPanel.openHistoryModal('proximas'); return false;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="9 18 15 12 9 6"/>
+          </svg>
+          Próximas consultas
+        </a>
+      </div>
+
+      <!-- Configurações -->
+      <div class="sidebar-nav-group">
+        <span class="sidebar-group-title">Configurações</span>
+        <a href="#config-medico" class="sidebar-nav-item" onclick="alert('Configurações do perfil médico e CRM.'); return false;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/>
+            <circle cx="12" cy="12" r="3"/>
+          </svg>
+          Configurações do médico
+        </a>
+        <a href="#disponibilidade" class="sidebar-nav-item" onclick="alert('Configuração de horários de atendimento Presencial e Teleconsulta.'); return false;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"/>
+            <polyline points="12 6 12 12 14 14"/>
+          </svg>
+          Configurações de disponibilidade
+        </a>
+        <a href="#gestao-agenda" class="sidebar-nav-item" onclick="alert('Gestão de bloqueios e slots da agenda.'); return false;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect width="18" height="18" x="3" y="4" rx="2" ry="2"/>
+            <line x1="16" y1="2" x2="16" y2="6"/>
+            <line x1="8" y1="2" x2="8" y2="6"/>
+            <line x1="3" y1="10" x2="21" y2="10"/>
+          </svg>
+          Gestão da Agenda
+        </a>
+        <a href="#suporte" class="sidebar-nav-item" onclick="alert('Suporte técnico Doctor Smart via WhatsApp oficial.'); return false;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"/>
+            <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/>
+            <line x1="12" y1="17" x2="12.01" y2="17"/>
+          </svg>
+          Ajuda e Suporte
+        </a>
+      </div>
+    </nav>
+
+    <!-- Rodapé da Sidebar -->
+    <div class="sidebar-footer-user">
+      <a href="index.html" class="sidebar-link-home">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="19" y1="12" x2="5" y2="12"/>
+          <polyline points="12 19 5 12 12 5"/>
+        </svg>
+        Ver Portal do Paciente
+      </a>
+    </div>
+  </aside>
+
+  <!-- ======================================================================
+       2. CONTEÚDO PRINCIPAL DO PAINEL SAAS
+       ====================================================================== -->
+  <main class="panel-main-wrapper">
+    
+    <!-- Topbar Superior -->
+    <header class="panel-topbar">
+      <div class="topbar-left-title">
+        Painel
+      </div>
+
+      <div class="topbar-right-actions">
+        <!-- Alternador de Médicos para Demonstração / Teste -->
+        <div class="doctor-switcher-wrap">
+          <span>Médico Conectado:</span>
+          <select id="doctor-switcher-select" class="doctor-select-dropdown" title="Selecione o médico para visualizar o painel correspondente"></select>
+        </div>
+
+        <span class="doctor-email-badge" id="doctor-email-badge">
+          dr.jayme@doctorsmart.com.br
+        </span>
+      </div>
+    </header>
+
+    <!-- Container do Painel -->
+    <div class="panel-content-container">
+      
+      <!-- Cabeçalho de Boas-vindas -->
+      <div class="panel-hero-header">
+        <h1 class="panel-hero-title">Portal do profissional</h1>
+        
+        <div class="panel-sync-badge">
+          <span class="sync-dot"></span>
+          <span>Sincronização Ativa com a Agenda do Paciente</span>
+        </div>
+      </div>
+
+      <!-- ==================================================================
+           3. CARDS DE MÉTRICAS (KPIS SUPERIORES)
+           ================================================================== -->
+      <section class="metrics-grid-four">
+        <!-- Total de Pacientes -->
+        <div class="metric-kpi-card">
+          <div class="kpi-left-info">
+            <span class="kpi-number" id="kpi-total-patients">25</span>
+            <span class="kpi-label" id="kpi-label-patients">Total de pacientes</span>
+          </div>
+          <div class="kpi-icon-box">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
+              <circle cx="9" cy="7" r="4"/>
+              <path d="M22 21v-2a4 4 0 0 0-3-3.87"/>
+              <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+            </svg>
+          </div>
+        </div>
+
+        <!-- Consultas -->
+        <div class="metric-kpi-card">
+          <div class="kpi-left-info">
+            <span class="kpi-number" id="kpi-total-consults">16</span>
+            <span class="kpi-label" id="kpi-label-consults">Consultas este mês</span>
+          </div>
+          <div class="kpi-icon-box">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect width="18" height="18" x="3" y="4" rx="2" ry="2"/>
+              <line x1="16" y1="2" x2="16" y2="6"/>
+              <line x1="8" y1="2" x2="8" y2="6"/>
+              <line x1="3" y1="10" x2="21" y2="10"/>
+            </svg>
+          </div>
+        </div>
+
+        <!-- Faturamento Dinâmico -->
+        <div class="metric-kpi-card">
+          <div class="kpi-left-info">
+            <span class="kpi-number kpi-revenue-highlight" id="kpi-monthly-revenue">R$ 6.000,00</span>
+            <span class="kpi-label" id="kpi-label-revenue">Faturamento mensal</span>
+          </div>
+          <div class="kpi-icon-box">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="12" y1="2" x2="12" y2="22"/>
+              <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+            </svg>
+          </div>
+        </div>
+
+        <!-- Novos Pacientes -->
+        <div class="metric-kpi-card">
+          <div class="kpi-left-info">
+            <span class="kpi-number" id="kpi-new-patients">8</span>
+            <span class="kpi-label" id="kpi-label-new-patients">Novos pacientes este mês</span>
+          </div>
+          <div class="kpi-icon-box">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
+              <circle cx="9" cy="7" r="4"/>
+              <line x1="19" y1="8" x2="19" y2="14"/>
+              <line x1="22" y1="11" x2="16" y2="11"/>
+            </svg>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================================================================
+           4. LAYOUT PRINCIPAL DO DASHBOARD (2 COLUNAS)
+           ================================================================== -->
+      <div class="dashboard-main-grid">
+        
+        <!-- ================================================================
+             COLUNA ESQUERDA: GRÁFICO DE PACIENTES + CONSULTAS DE HOJE + AVALIAÇÕES
+             ================================================================ -->
+        <div class="dashboard-col-left">
+          
+          <!-- Card 1: Estatísticas de Pacientes (Gráfico Interativo) -->
+          <div class="dash-card">
+            <div class="dash-card-header">
+              <h2 class="dash-card-title">Estatísticas de pacientes</h2>
+              
+              <div class="chart-time-tabs">
+                <button type="button" class="chart-tab-btn" data-period="dia">Dia</button>
+                <button type="button" class="chart-tab-btn active" data-period="mes">Mês</button>
+                <button type="button" class="chart-tab-btn" data-period="ano">Ano</button>
+              </div>
+            </div>
+
+            <div class="chart-svg-container" id="patient-chart-container">
+              <!-- Gráfico SVG gerado dinamicamente via JS -->
+            </div>
+          </div>
+
+          <!-- Card 2: Consultas de Hoje (Tabela Sincronizada) -->
+          <div class="dash-card" id="consultas-hoje">
+            <div class="dash-card-header">
+              <h2 class="dash-card-title">Consultas de Hoje</h2>
+              <a href="#" style="font-size: 0.825rem; color: #028090; font-weight: 600; text-decoration: none;" onclick="window.DoctorSmartPanel.openHistoryModal('todas'); return false;">
+                Ver todas as consultas &rarr;
+              </a>
+            </div>
+
+            <div class="appointments-table-header">
+              <span>Paciente</span>
+              <span>Horário</span>
+              <span>Status</span>
+              <span style="text-align: right;">Prontuário</span>
+            </div>
+
+            <div class="appointments-rows-container" id="appointments-rows-box">
+              <!-- Linhas de consultas geradas dinamicamente via JS -->
+            </div>
+          </div>
+
+          <!-- Card 3: Performance Financeira & Gestão da Hora Médica (Visão Executiva do Médico) -->
+          <div class="dash-card">
+            <div class="dash-card-header">
+              <div>
+                <h2 class="dash-card-title">Performance Financeira & Gestão da Hora</h2>
+                <span style="font-size: 0.8rem; color: #64748b;">Métricas executivas de rentabilidade e produtividade clínica</span>
+              </div>
+              <span class="panel-sync-badge" style="background: #eff6ff; color: #1d4ed8; border-color: #bfdbfe;">
+                Visão Empresarial
+              </span>
+            </div>
+
+            <!-- Grid de 4 KPIs Financeiros da Hora Médica -->
+            <div class="financial-metrics-grid">
+              <!-- Valor por Hora Clínica -->
+              <div class="fin-kpi-card">
+                <span class="fin-kpi-label">Valor Médio por Hora Clínica</span>
+                <strong class="fin-kpi-number" id="fin-hourly-rate" style="color: #028090;">R$ 480,00/h</strong>
+                <span class="fin-kpi-sub">Tempo médio: 35 min/consulta</span>
+              </div>
+
+              <!-- Ticket Médio por Consulta -->
+              <div class="fin-kpi-card">
+                <span class="fin-kpi-label">Ticket Médio por Consulta</span>
+                <strong class="fin-kpi-number" id="fin-ticket-price" style="color: #0f172a;">R$ 300,00</strong>
+                <span class="fin-kpi-sub">Valor de tabela verificado</span>
+              </div>
+
+              <!-- Taxa de Retorno / Acompanhamento -->
+              <div class="fin-kpi-card">
+                <span class="fin-kpi-label">Taxa de Fidelização / Retorno</span>
+                <strong class="fin-kpi-number" id="fin-return-rate" style="color: #16a34a;">76.4%</strong>
+                <span class="fin-kpi-sub">Pacientes em acompanhamento</span>
+              </div>
+
+              <!-- Horas Clínicas Produtivas no Mês -->
+              <div class="fin-kpi-card">
+                <span class="fin-kpi-label">Horas Produtivas no Mês</span>
+                <strong class="fin-kpi-number" id="fin-productive-hours" style="color: #2563eb;">14h 30m</strong>
+                <span class="fin-kpi-sub">Tempo em consulta direta</span>
+              </div>
+            </div>
+
+            <!-- Barras de Eficiência Operacional e Margem -->
+            <div class="financial-bars-container">
+              <div class="fin-bar-item">
+                <div class="fin-bar-labels">
+                  <span>Margem Líquida da Operação (Repasse Efetivo ao Médico)</span>
+                  <strong style="color: #16a34a;">88.5%</strong>
+                </div>
+                <div class="fin-bar-track"><div class="fin-bar-fill" style="width: 88.5%; background: #10b981;"></div></div>
+              </div>
+
+              <div class="fin-bar-item">
+                <div class="fin-bar-labels">
+                  <span>Ocupação Efetiva da Grade de Horários da Semana</span>
+                  <strong style="color: #028090;">91.2%</strong>
+                </div>
+                <div class="fin-bar-track"><div class="fin-bar-fill" style="width: 91.2%; background: #028090;"></div></div>
+              </div>
+
+              <div class="fin-bar-item">
+                <div class="fin-bar-labels">
+                  <span>Pontualidade e Respeito ao Tempo do Consultório</span>
+                  <strong style="color: #2563eb;">98.2%</strong>
+                </div>
+                <div class="fin-bar-track"><div class="fin-bar-fill" style="width: 98.2%; background: #2563eb;"></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ================================================================
+             COLUNA DIREITA: WIDGET DO MÉDICO + DURAÇÃO + TIPO DE AGENDAMENTO
+             ================================================================ -->
+        <div class="dashboard-col-right">
+          
+          <!-- Widget 1: Card do Médico Conectado -->
+          <div class="dash-card doctor-profile-widget">
+            <div class="widget-avatar-circle">
+              <img id="widget-avatar-img" src="https://images.unsplash.com/photo-1622253692010-333f2da6031d?auto=format&fit=crop&q=80&w=400" alt="Médico">
+            </div>
+
+            <h3 class="widget-doc-name" id="widget-doc-name">Dr. Jean (Conta Teste)</h3>
+            <p class="widget-doc-crm" id="widget-doc-crm">CRM-BA 31.081 RQE 2245</p>
+
+            <div class="widget-badges-row">
+              <span class="widget-badge-pill badge-patients-count" id="widget-patients-badge">52 Pacientes</span>
+              <span class="widget-badge-pill badge-member-since">Desde 04 Out 2025</span>
+            </div>
+
+            <div class="widget-stats-list">
+              <!-- Faturamento Anual -->
+              <div class="widget-stat-item">
+                <div class="widget-stat-icon icon-green">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="12" y1="1" x2="12" y2="23"/>
+                    <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+                  </svg>
+                </div>
+                <div class="widget-stat-texts">
+                  <span class="widget-stat-label">Faturamento anual</span>
+                  <strong class="widget-stat-val" id="widget-annual-rev">R$ 142.800,00</strong>
+                </div>
+              </div>
+
+              <!-- Novos Pacientes -->
+              <div class="widget-stat-item">
+                <div class="widget-stat-icon icon-blue">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
+                    <circle cx="9" cy="7" r="4"/>
+                    <line x1="19" y1="8" x2="19" y2="14"/>
+                    <line x1="22" y1="11" x2="16" y2="11"/>
+                  </svg>
+                </div>
+                <div class="widget-stat-texts">
+                  <span class="widget-stat-label">Novos pacientes</span>
+                  <strong class="widget-stat-val" id="widget-new-patients">12</strong>
+                </div>
+              </div>
+
+              <!-- Total de Casos -->
+              <div class="widget-stat-item">
+                <div class="widget-stat-icon icon-amber">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                    <polyline points="14 2 14 8 20 8"/>
+                  </svg>
+                </div>
+                <div class="widget-stat-texts">
+                  <span class="widget-stat-label">Total de casos</span>
+                  <strong class="widget-stat-val" id="widget-total-cases">139</strong>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Widget 2: Performance & Taxa de Comparecimento (Substitui o semi-donut azul) -->
+          <div class="dash-card">
+            <h3 class="dash-card-title">Performance & Comparecimento</h3>
+            <div id="attendance-kpi-container">
+              <!-- Gerado via JS -->
+            </div>
+          </div>
+
+          <!-- Widget 3: Tipo de Agendamento (Barras Horizontais com Rótulos Completos) -->
+          <div class="dash-card">
+            <h3 class="dash-card-title">Distribuição de Atendimentos</h3>
+            <div id="hbars-chart-box">
+              <!-- Gerado via JS -->
+            </div>
+          </div>
+
+          <!-- Widget 4: Avaliações dos Pacientes (Encaixe Perfeito no Vão) -->
+          <div class="dash-card doctor-reviews-card">
+            <div class="dash-card-header">
+              <div>
+                <h3 class="dash-card-title">Avaliações dos Pacientes</h3>
+                <span style="font-size: 0.775rem; color: #64748b;">Opiniões verificadas pós-consulta</span>
+              </div>
+              <span id="reviews-score-badge" class="panel-sync-badge" style="background: #fef3c7; color: #b45309; border-color: #fde68a;">
+                ⭐ 5.0
+              </span>
+            </div>
+            
+            <div id="doctor-reviews-container">
+              <!-- Gerado dinamicamente via JS -->
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+  </main>
+
+  <!-- ======================================================================
+       5. MODAL DE HISTÓRICO COMPLETO DE CONSULTAS (FACILITADO)
+       ====================================================================== -->
+  <div class="record-modal-backdrop" id="history-modal-backdrop">
+    <div class="record-modal-container" style="max-width: 680px;">
+      <div class="record-modal-header">
+        <div>
+          <h2 style="font-size: 1.25rem; font-weight: 700; color: #0f172a;">Histórico Geral de Consultas</h2>
+          <span style="font-size: 0.8rem; color: #64748b;">Visualização facilitada de agendamentos e atendimentos</span>
+        </div>
+        <button type="button" id="btn-close-history-modal" style="background: none; border: none; font-size: 1.5rem; color: #64748b; cursor: pointer;">&times;</button>
+      </div>
+
+      <div class="record-modal-body" style="padding: 1rem 1.5rem;">
+        <div id="history-appointments-list" style="display: flex; flex-direction: column; gap: 0.25rem; max-height: 480px; overflow-y: auto;">
+          <!-- Linhas de histórico geradas via JS -->
+        </div>
+
+        <div style="display: flex; justify-content: flex-end; margin-top: 1.25rem; padding-top: 0.75rem; border-top: 1px solid #e2e8f0;">
+          <button type="button" onclick="document.getElementById('history-modal-backdrop').classList.remove('active');" style="padding: 0.65rem 1.5rem; border-radius: 6px; border: 1px solid #cbd5e1; background: #fff; color: #475569; font-weight: 600; cursor: pointer;">Fechar Histórico</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======================================================================
+       6. MODAL DE PRONTUÁRIO ELETRÔNICO DO PACIENTE
+       ====================================================================== -->
+  <div class="record-modal-backdrop" id="record-modal-backdrop">
+    <div class="record-modal-container">
+      <div class="record-modal-header">
+        <div>
+          <h2 style="font-size: 1.2rem; font-weight: 700; color: #0f172a;" id="modal-record-patient-name">Nome do Paciente</h2>
+          <span style="font-size: 0.8rem; color: #64748b;" id="modal-record-patient-phone">(71) 99842-1102</span>
+        </div>
+        <button type="button" id="btn-close-record-modal" style="background: none; border: none; font-size: 1.5rem; color: #64748b; cursor: pointer;">&times;</button>
+      </div>
+
+      <div class="record-modal-body">
+        <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 1rem; margin-bottom: 1.25rem;">
+          <p><strong>Médico Responsável:</strong> <span id="modal-record-doctor">Dr. Jayme Batista</span></p>
+          <p><strong>Motivo da Consulta:</strong> <span id="modal-record-reason">Check-up de rotina</span></p>
+          <p><strong>Data:</strong> Hoje • <strong>Status:</strong> Em atendimento clínico</p>
+        </div>
+
+        <h4 style="font-size: 0.95rem; font-weight: 700; color: #0f172a; margin-bottom: 0.5rem;">Anamnese e Evolução Clínica</h4>
+        <textarea style="width: 100%; height: 100px; padding: 0.75rem; border: 1px solid #cbd5e1; border-radius: 8px; font-family: inherit; font-size: 0.875rem; margin-bottom: 1rem;" placeholder="Digite aqui as anotações clínicas da consulta...">Paciente refere melhora das dores com o tratamento prescrito. Exame físico sem alterações agudas. Conduta mantida.</textarea>
+
+        <h4 style="font-size: 0.95rem; font-weight: 700; color: #0f172a; margin-bottom: 0.5rem;">Prescrição Digital & Recomendações</h4>
+        <textarea style="width: 100%; height: 80px; padding: 0.75rem; border: 1px solid #cbd5e1; border-radius: 8px; font-family: inherit; font-size: 0.875rem; margin-bottom: 1.25rem;" placeholder="Prescrição de medicamentos...">1. Dipirona 1g se dor moderada.
+2. Manter fisioterapia motora 2x por semana.</textarea>
+
+        <div style="display: flex; justify-content: flex-end; gap: 0.75rem;">
+          <button type="button" onclick="document.getElementById('record-modal-backdrop').classList.remove('active');" style="padding: 0.65rem 1.25rem; border-radius: 6px; border: 1px solid #cbd5e1; background: #fff; color: #475569; font-weight: 600; cursor: pointer;">Fechar</button>
+          <button type="button" onclick="alert('Evolução clínica e prescrição digital salvas com sucesso!'); document.getElementById('record-modal-backdrop').classList.remove('active');" style="padding: 0.65rem 1.5rem; border-radius: 6px; border: none; background: #028090; color: #fff; font-weight: 700; cursor: pointer;">Salvar no Prontuário</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts: Base de Dados e Lógica do Painel -->
+  <script src="assets/js/data.js"></script>
+  <script src="assets/js/painel.js"></script>
+</body>
+</html>
